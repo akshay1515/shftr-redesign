@@ -76,7 +76,7 @@ class _NAICECategoryState extends State<NAICECategory> {
                                 NAICE:  _categoryItems[index][i]["subcategory"]));
                           Navigator.of(context).pop();
                             },
-                          style: ListTileStyle.drawer,
+                         // style: ListTileStyle.drawer,
                           leading: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [

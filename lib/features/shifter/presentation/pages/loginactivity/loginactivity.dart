@@ -64,117 +64,62 @@ class _LoginActivityState extends State<LoginActivity> {
             ),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        'Let\'s login to start an awesome journey with us',
-                        style: TextStyle(
-                            fontFamily: "Poppins", color: Colors.black87),
-                      ),
-                      Text(
-                        'Provide your mobile number',
-                        style: TextStyle(
-                            color: Colors.black87,
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
-                      ),
-                      Text.rich(TextSpan(
-                          children: [
-                            TextSpan(
-                                text: "You are about to login as ",
-                                style: TextStyle(fontSize: 13)),
-                            TextSpan(
-                                text: "${userRole.userSelection}",
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.w600)),
-                          ],
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          'Let\'s login to start an awesome journey with us',
                           style: TextStyle(
-                              color: Colors.black87, fontFamily: "Poppins"))),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: size.width * 0.26,
-                            child: TextFormField(
-                              readOnly: true,
-                              autofocus: false,
-                              controller: _countryController,
-                              focusNode: _countryfocus,
-                              keyboardType: TextInputType.phone,
-                              decoration: InputDecoration(
-                                isDense: true,
-                                contentPadding:
-                                    EdgeInsets.only(left: 8, right: 8),
-                                labelStyle: TextStyle(
-                                    color: _countryfocus.hasFocus
-                                        ? Colors.grey
-                                        : Colors.grey),
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.grey.shade700,
-                                      style: BorderStyle.solid,
-                                      width: 1),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                prefixIcon: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 10.0, right: 6),
-                                  child: Image.network(
-                                    Provider.of<LoginProvider>(context)
-                                        .selectedCountry!
-                                        .cFlag,
-                                    height: 20,
-                                    width: 30,
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.grey,
-                                      style: BorderStyle.solid,
-                                      width: 1),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              inputFormatters: [
-                                LengthLimitingTextInputFormatter(10)
-                              ],
-                              onTap: () {
-                                showCountryList(context);
-                                setState(() {
-                                  if (_loginFocus.hasFocus) {
-                                    _loginFocus.unfocus();
-                                  }
-                                  FocusScope.of(context)
-                                      .requestFocus(_countryfocus);
-                                });
-                              },
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          SizedBox(
-                            width: size.width * 0.67,
-                            child: TextFormField(
-                              controller: _mobileController,
-                              key: _loginkey,
-                              autofocus: false,
-                              focusNode: _loginFocus,
-                              keyboardType: TextInputType.phone,
-                              decoration: InputDecoration(
+                              fontFamily: "Poppins", color: Colors.black87),
+                        ),
+                        Text(
+                          'Provide your mobile number',
+                          style: TextStyle(
+                              color: Colors.black87,
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20),
+                        ),
+                        Text.rich(TextSpan(
+                            children: [
+                              TextSpan(
+                                  text: "You are about to login as ",
+                                  style: TextStyle(fontSize: 13)),
+                              TextSpan(
+                                  text: "${userRole.userSelection}",
+                                  style: TextStyle(
+                                      fontSize: 14, fontWeight: FontWeight.w600)),
+                            ],
+                            style: TextStyle(
+                                color: Colors.black87, fontFamily: "Poppins"))),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: size.width * 0.26,
+                              child: TextFormField(
+                                readOnly: true,
+                                autofocus: false,
+                                controller: _countryController,
+                                focusNode: _countryfocus,
+                                keyboardType: TextInputType.phone,
+                                decoration: InputDecoration(
                                   isDense: true,
+                                  contentPadding:
+                                      EdgeInsets.only(left: 8, right: 8),
                                   labelStyle: TextStyle(
-                                      color: _loginFocus.hasFocus
-                                          ? Colors.amber.shade700
+                                      color: _countryfocus.hasFocus
+                                          ? Colors.grey
                                           : Colors.grey),
                                   border: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -183,122 +128,179 @@ class _LoginActivityState extends State<LoginActivity> {
                                         width: 1),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
+                                  prefixIcon: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 10.0, right: 6),
+                                    child: Image.network(
+                                      Provider.of<LoginProvider>(context)
+                                          .selectedCountry!
+                                          .cFlag,
+                                      height: 20,
+                                      width: 30,
+                                    ),
+                                  ),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.amber.shade700,
+                                        color: Colors.grey,
                                         style: BorderStyle.solid,
                                         width: 1),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
-                                  labelText: _loginFocus.hasFocus
-                                      ? "Mobile Number"
-                                      : "Enter your mobile number registered with us"),
-                              inputFormatters: [
-                                LengthLimitingTextInputFormatter(10)
-                              ],
-                              validator: (value){
-                                if(value!.isNotEmpty){
-                                  if(value.length != 10){
-                                    return "Enter valid mobile number";
-                                  }else {
-                                    return null;
-                                  }
-                                }else{
-                                  return "Mobile number is required";
-                                }
-                              },
-                              onTap: () {
-                                setState(() {
-                                  FocusScope.of(context)
-                                      .requestFocus(_loginFocus);
-                                });
-                              },
+                                ),
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(10)
+                                ],
+                                onTap: () {
+                                  showCountryList(context);
+                                  setState(() {
+                                    if (_loginFocus.hasFocus) {
+                                      _loginFocus.unfocus();
+                                    }
+                                    FocusScope.of(context)
+                                        .requestFocus(_countryfocus);
+                                  });
+                                },
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                        child: Text(
-                          'We will be sending you One Time Verification code to verify your account with us',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.black87,
-                              fontFamily: "Poppins",
-                              fontSize: 10),
+                            SizedBox(width: 10),
+                            SizedBox(
+                              width: size.width * 0.67,
+                              child: TextFormField(
+                                controller: _mobileController,
+                                key: _loginkey,
+                                autofocus: false,
+                                focusNode: _loginFocus,
+                                keyboardType: TextInputType.phone,
+                                decoration: InputDecoration(
+                                    isDense: true,
+                                    labelStyle: TextStyle(
+                                        color: _loginFocus.hasFocus
+                                            ? Colors.amber.shade700
+                                            : Colors.grey),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.grey.shade700,
+                                          style: BorderStyle.solid,
+                                          width: 1),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.amber.shade700,
+                                          style: BorderStyle.solid,
+                                          width: 1),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    labelText: _loginFocus.hasFocus
+                                        ? "Mobile Number"
+                                        : "Enter your mobile number registered with us"),
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(10)
+                                ],
+                                validator: (value){
+                                  if(value!.isNotEmpty){
+                                    if(value.length != 10){
+                                      return "Enter valid mobile number";
+                                    }else {
+                                      return null;
+                                    }
+                                  }else{
+                                    return "Mobile number is required";
+                                  }
+                                },
+                                onTap: () {
+                                  setState(() {
+                                    FocusScope.of(context)
+                                        .requestFocus(_loginFocus);
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: 20),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if(_loginkey.currentState!.validate()){
-                              Navigator.of(context).pushNamed(OTPActivity.Tag,arguments: {"mobile" : _mobileController.text});
-                            }
-                          },
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 14.0),
                           child: Text(
-                            'Send OTP',
+                            'We will be sending you One Time Verification code to verify your account with us',
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: Colors.black87,
                                 fontFamily: "Poppins",
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16),
+                                fontSize: 10),
                           ),
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              primary: ColorConstant.primary,
-                              minimumSize: Size(size.width, 45)),
                         ),
-                      )
-                    ],
-                  ),
-                  Image.asset('assets/images/loginimage.png'),
-                  Container(
-                      margin: EdgeInsets.only(bottom: 20),
-                      child: RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(children: [
-                            TextSpan(
-                                text: 'Shftr\'s ',
-                                style: TextStyle(
-                                    fontSize: 13, color: Colors.black87)),
-                            TextSpan(
-                                text: 'Terms and Conditions ',
-                                style: TextStyle(
-                                    fontSize: 13.5,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.blue.shade300),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () => {
-                                        Fluttertoast.showToast(
-                                            msg:
-                                                'Will show shftr\'s terms and conditions')
-                                      }),
-                            TextSpan(
-                                text: '\n& ',
-                                style: TextStyle(
-                                    fontSize: 13, color: Colors.black87)),
-                            TextSpan(
-                                text: 'Privacy Policy ',
-                                style: TextStyle(
-                                    fontSize: 13.5,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.blue.shade300),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () => {
-                                        Fluttertoast.showToast(
-                                            msg:
-                                                'Will show shftr\'s privacy policy')
-                                      }),
-                          ])))
-                ],
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 20),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if(_loginkey.currentState!.validate()){
+                                Navigator.of(context).pushNamed(OTPActivity.Tag,arguments: {"mobile" : _mobileController.text});
+                              }
+                            },
+                            child: Text(
+                              'Send OTP',
+                              style: TextStyle(
+                                  color: Colors.black87,
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                primary: ColorConstant.primary,
+                                minimumSize: Size(size.width, 45)),
+                          ),
+                        )
+                      ],
+                    ),
+                    Image.asset('assets/images/loginimage.png'),
+                    Container(
+                        margin: EdgeInsets.only(bottom: 20),
+                        child: RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(children: [
+                              TextSpan(
+                                  text: 'Shftr\'s ',
+                                  style: TextStyle(
+                                      fontSize: 13, color: Colors.black87)),
+                              TextSpan(
+                                  text: 'Terms and Conditions ',
+                                  style: TextStyle(
+                                      fontSize: 13.5,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.blue.shade300),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () => {
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                  'Will show shftr\'s terms and conditions')
+                                        }),
+                              TextSpan(
+                                  text: '\n& ',
+                                  style: TextStyle(
+                                      fontSize: 13, color: Colors.black87)),
+                              TextSpan(
+                                  text: 'Privacy Policy ',
+                                  style: TextStyle(
+                                      fontSize: 13.5,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.blue.shade300),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () => {
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                  'Will show shftr\'s privacy policy')
+                                        }),
+                            ])))
+                  ],
+                ),
               ),
             ))
         : LoadingScreen();

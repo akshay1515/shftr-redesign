@@ -16,8 +16,8 @@ class RegisterBusiness extends StatefulWidget {
   _RegisterBusinessState createState() => _RegisterBusinessState();
 }
 
-final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-final GlobalKey<FormState> _registerbusiness = GlobalKey<FormState>();
+ GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+ GlobalKey<FormState> _registerbusiness = GlobalKey<FormState>();
 
 TextEditingController _naiceController = TextEditingController();
 TextEditingController _businessNameController = TextEditingController();
@@ -497,7 +497,7 @@ class _RegisterBusinessState extends State<RegisterBusiness> {
                   margin: EdgeInsets.symmetric(horizontal: 8),
                   child: ElevatedButton(
                     onPressed: () {
-                      /*Navigator.of(context).pushNamed(RegisterBusiness.Tag);*/
+                      Navigator.of(context).pushNamed(RegisterBusiness.Tag);
                     },
                     child: Text(
                       'Next',

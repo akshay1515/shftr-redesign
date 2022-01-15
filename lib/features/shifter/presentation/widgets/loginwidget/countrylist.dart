@@ -26,62 +26,64 @@ class _CountriesListState extends State<CountriesList> {
           topRight: Radius.circular(15), topLeft: Radius.circular(15)),
       child: Container(
         color: Colors.white.withOpacity(0.95),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: TextFormField(
-                focusNode: _searchFocus,
-                onTap: () {
-                  FocusScope.of(context).requestFocus(_searchFocus);
-                },
-                controller: _searchController,
-                onChanged: (value) {
-                  Provider.of<LoginProvider>(context, listen: false)
-                      .searchCountry(value);
-                  setState(() {});
-                },
-                decoration: InputDecoration(
-                    labelStyle: TextStyle(
-                        color: _searchFocus.hasFocus
-                            ? Colors.amber.shade700
-                            : Colors.grey),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Colors.grey.shade700,
-                          style: BorderStyle.solid,
-                          width: 1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Colors.amber.shade700,
-                          style: BorderStyle.solid,
-                          width: 1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    labelText: "Search Country Here"),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 10,
               ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.47,
-              child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  itemCount: countriesList.countryList.length,
-                  itemBuilder: (_, index) {
-                    return CountryWidget(
-                      model: countriesList.countryList[index],
-                    );
-                  }),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: TextFormField(
+                  focusNode: _searchFocus,
+                  onTap: () {
+                    FocusScope.of(context).requestFocus(_searchFocus);
+                  },
+                  controller: _searchController,
+                  onChanged: (value) {
+                    Provider.of<LoginProvider>(context, listen: false)
+                        .searchCountry(value);
+                    setState(() {});
+                  },
+                  decoration: InputDecoration(
+                      labelStyle: TextStyle(
+                          color: _searchFocus.hasFocus
+                              ? Colors.amber.shade700
+                              : Colors.grey),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Colors.grey.shade700,
+                            style: BorderStyle.solid,
+                            width: 1),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Colors.amber.shade700,
+                            style: BorderStyle.solid,
+                            width: 1),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      labelText: "Search Country Here"),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.47,
+                child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    itemCount: countriesList.countryList.length,
+                    itemBuilder: (_, index) {
+                      return CountryWidget(
+                        model: countriesList.countryList[index],
+                      );
+                    }),
+              ),
+            ],
+          ),
         ),
       ),
     );
