@@ -34,6 +34,8 @@ dependencies:
   fluttertoast:
   intl:
   pin_code_fields:
+  shared_preferences:
+  webview_flutter:
 
 
 
