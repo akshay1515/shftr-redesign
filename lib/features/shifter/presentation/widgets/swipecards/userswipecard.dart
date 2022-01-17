@@ -13,17 +13,20 @@ class UserSwipeCards extends StatelessWidget {
       final urlimages = provider.urlImages;
 
       return Stack(
-        children: urlimages.map((e) => CardWidget(urlImage: e,onDisplay: urlimages.last == e,)).toList(),
+        children: urlimages
+            .map((e) => CardWidget(
+                  urlImage: e,
+                  onDisplay: urlimages.last == e,
+                ))
+            .toList(),
       );
     }
-    return SafeArea(child: Container(
+
+    return Container(
+      height: MediaQuery.of(context).size.height / 1.4,
       alignment: Alignment.center,
-      padding: EdgeInsets.all(16),
+      padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 12),
       child: buildCards(),
-    ));
-
-
+    );
   }
-
-
 }

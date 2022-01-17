@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shifter/features/shifter/presentation/pages/locationactivity/location_activity.dart';
 import 'package:shifter/features/shifter/presentation/widgets/swipecards/userswipecard.dart';
 import 'package:shifter/utils/consants.dart';
+import 'package:shifter/utils/fontconstant.dart';
 
 class UserHomePage extends StatefulWidget {
   static const String Tag = "-/userhomepage";
@@ -312,7 +313,7 @@ class _UserHomePageState extends State<UserHomePage> {
                                             style: TextStyle(
                                                 color: Colors.black,
                                                 fontWeight: FontWeight.bold,
-                                                fontSize: 14.0
+                                                fontSize: FontConstant.Tagline_text
                                             ),
                                           ),
                                         ),
@@ -322,7 +323,7 @@ class _UserHomePageState extends State<UserHomePage> {
                                             style: TextStyle(
                                                 color: Colors.black,
                                                 fontWeight: FontWeight.normal,
-                                                fontSize: 12.0
+                                                fontSize: FontConstant.Mini_Tagline_text
                                             ),
                                           ),
                                         ),
@@ -338,7 +339,7 @@ class _UserHomePageState extends State<UserHomePage> {
                                                 style: TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.w600,
-                                                    fontSize: 12.0
+                                                    fontSize: FontConstant.Mini_Tagline_text
                                                 ),
                                               ),
                                             ],
@@ -362,7 +363,7 @@ class _UserHomePageState extends State<UserHomePage> {
                                               textAlign: TextAlign.center,
                                               softWrap: false,
                                               style: TextStyle(
-                                                fontSize: 12.0,
+                                                fontSize: FontConstant.Mini_Tagline_text,
                                                 height: 1.5,
 
                                               ),),
@@ -439,7 +440,7 @@ class _UserHomePageState extends State<UserHomePage> {
                                             style: TextStyle(
                                                 color: Colors.black,
                                                 fontWeight: FontWeight.bold,
-                                                fontSize: 14.0
+                                                fontSize: FontConstant.Tagline_text
                                             ),
                                           ),
                                         ),
@@ -449,7 +450,7 @@ class _UserHomePageState extends State<UserHomePage> {
                                             style: TextStyle(
                                                 color: Colors.black,
                                                 fontWeight: FontWeight.normal,
-                                                fontSize: 12.0
+                                                fontSize: FontConstant.Mini_Tagline_text
                                             ),
                                           ),
                                         ),
@@ -465,7 +466,7 @@ class _UserHomePageState extends State<UserHomePage> {
                                                 style: TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.w600,
-                                                    fontSize: 12.0
+                                                    fontSize: FontConstant.Mini_Tagline_text
                                                 ),
                                               ),
                                             ],
@@ -489,7 +490,7 @@ class _UserHomePageState extends State<UserHomePage> {
                                               textAlign: TextAlign.center,
                                               softWrap: false,
                                               style: TextStyle(
-                                                fontSize: 12.0,
+                                                fontSize: FontConstant.Mini_Tagline_text,
                                                 height: 1.5,
 
                                               ),),
@@ -566,7 +567,7 @@ class _UserHomePageState extends State<UserHomePage> {
                                             style: TextStyle(
                                                 color: Colors.black,
                                                 fontWeight: FontWeight.bold,
-                                                fontSize: 14.0
+                                                fontSize: FontConstant.Tagline_text
                                             ),
                                           ),
                                         ),
@@ -576,7 +577,7 @@ class _UserHomePageState extends State<UserHomePage> {
                                             style: TextStyle(
                                                 color: Colors.black,
                                                 fontWeight: FontWeight.normal,
-                                                fontSize: 12.0
+                                                fontSize: FontConstant.Mini_Tagline_text
                                             ),
                                           ),
                                         ),
@@ -592,7 +593,7 @@ class _UserHomePageState extends State<UserHomePage> {
                                                 style: TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.w600,
-                                                    fontSize: 12.0
+                                                    fontSize: FontConstant.Mini_Tagline_text
                                                 ),
                                               ),
                                             ],
@@ -616,7 +617,7 @@ class _UserHomePageState extends State<UserHomePage> {
                                               textAlign: TextAlign.center,
                                               softWrap: false,
                                               style: TextStyle(
-                                                fontSize: 12.0,
+                                                fontSize: FontConstant.Mini_Tagline_text,
                                                 height: 1.5,
 
                                               ),),
