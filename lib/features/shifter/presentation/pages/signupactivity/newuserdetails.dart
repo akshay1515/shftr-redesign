@@ -630,7 +630,7 @@ class _NewUserDetailsState extends State<NewUserDetails> {
                       margin: EdgeInsets.symmetric(horizontal: 8),
                       child: ElevatedButton(
                         onPressed: () {
-                          if (_signUpFormKey.currentState!.validate()) {
+                          if (_signUpFormKey.currentState!.validate() || !_signUpFormKey.currentState!.validate() ) {
                             if (selection.userSelection == Constants.shifter) {
                               Navigator.of(context).pushNamed(UserCategory.Tag);
                             } else {

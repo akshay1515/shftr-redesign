@@ -137,7 +137,10 @@ class _PrivacyWebviewState extends State<PrivacyWebview> {
                             if (count < urls.length - 1) {
                               changeWebpage();
                             } else {
-                              Navigator.of(context).pop();
+                              saveSharedPrefrences(count).then((value) {
+                                Navigator.of(context).pop();
+                              });
+
                             }
                           },
                           child: Row(

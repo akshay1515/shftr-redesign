@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shifter/features/shifter/presentation/provider/bottomnavigationprovider/screen_provider.dart';
 import 'package:shifter/features/shifter/presentation/provider/businessprovider/businessprovider.dart';
 import 'package:shifter/features/shifter/presentation/provider/jobcategoryprovider/jobcategoryprovider.dart';
 import 'package:shifter/features/shifter/presentation/provider/loginprovider/login_activity_provider.dart';
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       
       providers: [
+        ChangeNotifierProvider.value(value: ScreenProvider()),
         ChangeNotifierProvider.value(value: SelectionProvider()),
         ChangeNotifierProvider.value(value: LoginProvider()),
         ChangeNotifierProvider.value(value: BusinessProvider()),

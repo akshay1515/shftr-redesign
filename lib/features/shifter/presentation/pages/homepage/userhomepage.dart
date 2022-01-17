@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shifter/features/shifter/presentation/pages/home/home.dart';
+import 'package:shifter/features/shifter/presentation/provider/bottomnavigationprovider/screen_provider.dart';
+import 'package:shifter/features/shifter/presentation/widgets/bottomNavigation/bottom-navigation.dart';
 import 'package:shifter/features/shifter/presentation/widgets/homepage/privacy-bottom-sheet.dart';
 import 'package:shifter/features/shifter/presentation/widgets/loadingscreen.dart';
-import 'package:shifter/features/shifter/presentation/widgets/swipecards/userswipecard.dart';
 
 class UserHomePage extends StatefulWidget {
   static const String Tag = "-/userhomepage";
@@ -19,6 +22,8 @@ class _UserHomePageState extends State<UserHomePage> {
   bool _isLoading = false;
   SharedPreferences? _prefrences;
   String? status;
+  int? screen_count;
+  String? screen_status;
   int start_count = 0;
 
   showPrivacy(int count, BuildContext context) {
@@ -46,19 +51,35 @@ class _UserHomePageState extends State<UserHomePage> {
     _prefrences = await SharedPreferences.getInstance();
     status = _prefrences!.getString("status");
 
-    if (status != null) {
-      if (status == "partial") {
-        int count = _prefrences!.getInt("count")!;
-        showPrivacy(count, context);
-      } else {}
-    } else {
-      showPrivacy(0, context);
+    if(status != null){
+      screen_status = status;
+      screen_count = _prefrences!.getInt("count");
     }
+  }
 
+  Widget changeScreen(int _currentindex) {
+    switch (_currentindex) {
+      case 0:
+        return UserHome();
+      case 1:
+        return UserHome();
+      case 2:
+        return UserHome();
+      case 3:
+        return UserHome();
+      case 4:
+        return UserHome();
+      default:
+        return UserHome();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<ScreenProvider>(context);
+    final index = provider.currentIndex;
+
+
     return Scaffold(
         key: _userHomePagescaffoldKey,
         body: _isLoading
@@ -104,7 +125,17 @@ class _UserHomePageState extends State<UserHomePage> {
         ],
       ),*/
 
-            UserSwipeCards()
+            /* UserSwipeCards()*/
+            Stack(
+                children: [
+                  changeScreen(index),
+                  Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: CustomBottomNavigation()),
+                ],
+              )
             : LoadingScreen());
   }
 
@@ -112,6 +143,17 @@ class _UserHomePageState extends State<UserHomePage> {
   void initState() {
     super.initState();
     getSavedData().then((value) {
+
+      if(status != null){
+        if(status == "partial"){
+          showPrivacy(screen_count!, context);
+        }else{
+
+        }
+      }else{
+        showPrivacy(0, context);
+      }
+
       setState(() {
         _isLoading = true;
       });
