@@ -106,7 +106,7 @@ class _LoginActivityState extends State<LoginActivity> {
                         Row(
                           children: [
                             SizedBox(
-                              width: size.width * 0.26,
+                              width: size.width / 4,
                               child: TextFormField(
                                 readOnly: true,
                                 autofocus: false,
@@ -162,9 +162,9 @@ class _LoginActivityState extends State<LoginActivity> {
                                 },
                               ),
                             ),
-                            SizedBox(width: 10),
+                            SizedBox(width: 5),
                             SizedBox(
-                              width: size.width * 0.67,
+                              width: size.width /1.48,
                               child: TextFormField(
                                 controller: _mobileController,
                                 key: _loginkey,
@@ -239,9 +239,9 @@ class _LoginActivityState extends State<LoginActivity> {
                           margin: EdgeInsets.symmetric(horizontal: 20),
                           child: ElevatedButton(
                             onPressed: () {
-                              if(_loginkey.currentState!.validate()){
+                              //if(_loginkey.currentState!.validate()){
                                 Navigator.of(context).pushNamed(OTPActivity.Tag,arguments: {"mobile" : _mobileController.text});
-                              }
+                             // }
                             },
                             child: Text(
                               'Send OTP',

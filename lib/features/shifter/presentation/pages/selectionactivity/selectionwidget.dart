@@ -154,7 +154,7 @@ class _SelectionWidgetState extends State<SelectionWidget> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
-                          height: 10,
+                          height: 5,
                         ),
                         Column(
                           children: [

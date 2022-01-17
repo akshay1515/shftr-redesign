@@ -34,6 +34,8 @@ dependencies:
   fluttertoast:
   intl:
   pin_code_fields:
+  responsive_framework:
+  carousel_slider:
 
 
 

@@ -252,7 +252,7 @@ class _NewUserDetailsState extends State<NewUserDetails> {
                           Row(
                             children: [
                               SizedBox(
-                                width: size.width * 0.26,
+                                width: size.width / 4,
                                 child: TextFormField(
                                   readOnly: true,
                                   autofocus: false,
@@ -310,9 +310,9 @@ class _NewUserDetailsState extends State<NewUserDetails> {
                                   },
                                 ),
                               ),
-                              SizedBox(width: 10),
+                              SizedBox(width: 8),
                               SizedBox(
-                                width: size.width * 0.67,
+                                width: size.width /1.47,
                                 child: TextFormField(
                                   controller: _userphoneNumberController,
                                   autofocus: false,
@@ -630,14 +630,14 @@ class _NewUserDetailsState extends State<NewUserDetails> {
                       margin: EdgeInsets.symmetric(horizontal: 8),
                       child: ElevatedButton(
                         onPressed: () {
-                          if (_signUpFormKey.currentState!.validate()) {
-                            if (selection.userSelection == Constants.shifter) {
-                              Navigator.of(context).pushNamed(UserCategory.Tag);
-                            } else {
+                          // if (_signUpFormKey.currentState!.validate()) {
+                          //   if (selection.userSelection == Constants.shifter) {
+                          //     Navigator.of(context).pushNamed(UserCategory.Tag);
+                          //   } else {
                               Navigator.of(context)
                                   .pushNamed(RegisterBusiness.Tag);
-                            }
-                          }
+                            //}
+                        //  }
                         },
                         child: Text(
                           selection.userSelection == Constants.shifter

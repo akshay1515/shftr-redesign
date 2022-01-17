@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:shifter/features/shifter/presentation/pages/homepage/userhomepage.dart';
 import 'package:shifter/features/shifter/presentation/provider/businessprovider/businessprovider.dart';
 import 'package:shifter/features/shifter/presentation/provider/loginprovider/login_activity_provider.dart';
+import 'package:shifter/features/shifter/presentation/widgets/bottom_navigation.dart';
 import 'package:shifter/features/shifter/presentation/widgets/selectbusinesstype/naicecategory.dart';
 import 'package:shifter/utils/colorconstant.dart';
 
@@ -497,7 +499,7 @@ class _RegisterBusinessState extends State<RegisterBusiness> {
                   margin: EdgeInsets.symmetric(horizontal: 8),
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed(RegisterBusiness.Tag);
+                      Navigator.of(context).pushNamed(NavScreen.Tag);
                     },
                     child: Text(
                       'Next',
