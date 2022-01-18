@@ -484,7 +484,8 @@ class _UserHomePageState extends State<UserHomePage> {
                                         Center(
                                           child: Padding(
                                             padding: const EdgeInsets.all(18.0),
-                                            child: Text("Candidate description, Lorem ipsum dolor sit amet,consectetur adipiscing elit, consectetur adipiscing elit, sed do eiusmod tempor,consectetur adipiscing elit, "
+                                            child:
+                                            Text("Candidate description, Lorem ipsum dolor sit amet,consectetur adipiscing elit, consectetur adipiscing elit, sed do eiusmod tempor,consectetur adipiscing elit, "
                                               , maxLines: 3,
                                               overflow: TextOverflow.ellipsis,
                                               textAlign: TextAlign.center,

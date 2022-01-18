@@ -8,6 +8,7 @@ import 'package:shifter/features/shifter/presentation/provider/loginprovider/log
 import 'package:shifter/features/shifter/presentation/provider/selectionprovider/selection_activity_provider.dart';
 import 'package:shifter/features/shifter/presentation/provider/userskillprovider/userskillprovider.dart';
 import 'package:shifter/features/shifter/presentation/provider/userswipecardprovider.dart';
+import 'package:shifter/utils/colorconstant.dart';
 import 'package:shifter/utils/routes.dart';
 import '../features/shifter/presentation/pages/splashactivity/splashscreen.dart';
 
@@ -33,6 +34,11 @@ class MyApp extends StatelessWidget {
       
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          inputDecorationTheme: InputDecorationTheme(
+            floatingLabelStyle: TextStyle(color: ColorConstant.primary),
+          ),
+        ),
         builder: (context, widget) => ResponsiveWrapper.builder(
           ClampingScrollWrapper.builder(context, widget!),
           breakpoints: const [

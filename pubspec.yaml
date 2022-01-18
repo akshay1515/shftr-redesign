@@ -36,6 +36,8 @@ dependencies:
   pin_code_fields:
   responsive_framework:
   carousel_slider:
+  page_transition: 
+  tcard:
 
 
 

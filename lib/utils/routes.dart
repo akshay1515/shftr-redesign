@@ -7,6 +7,7 @@ import 'package:shifter/features/shifter/presentation/pages/selectionactivity/se
 import 'package:shifter/features/shifter/presentation/pages/signupactivity/businessregister.dart';
 import 'package:shifter/features/shifter/presentation/pages/signupactivity/newuserdetails.dart';
 import 'package:shifter/features/shifter/presentation/pages/splashactivity/splashscreen.dart';
+import 'package:shifter/features/shifter/presentation/pages/updateProfileActivity/update_personal_activity.dart';
 import 'package:shifter/features/shifter/presentation/pages/user-category/usercategory.dart';
 import 'package:shifter/features/shifter/presentation/pages/user-skill/userSkillSelect.dart';
 import 'package:shifter/features/shifter/presentation/widgets/bottom_navigation.dart';
@@ -36,6 +37,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => NAICECategory());
       case NavScreen.Tag:
         return MaterialPageRoute(builder: (_) => NavScreen());
+      case UpdatePersonalActivity.Tag:
+        return MaterialPageRoute(builder: (_) => UpdatePersonalActivity());
       case RegisterBusiness.Tag:
         return MaterialPageRoute(builder: (_) => RegisterBusiness());
       case UserCategory.Tag:
