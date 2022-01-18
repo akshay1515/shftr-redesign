@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shifter/features/shifter/presentation/pages/locationactivity/location_activity.dart';
+import 'package:shifter/features/shifter/presentation/pages/subscriptionActivity/subscription_activity.dart';
+import 'package:shifter/features/shifter/presentation/pages/updateProfileActivity/update_company_activity.dart';
 import 'package:shifter/features/shifter/presentation/pages/updateProfileActivity/update_personal_activity.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -149,7 +151,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     height: 60,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.of(context).pushNamed(LocationActivity.Tag);
+                        Navigator.push(context, PageTransition(
+                            child: UpdateCompanyActivity(), type: PageTransitionType.bottomToTop));
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(top: 8.0),
@@ -202,7 +205,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     height: 60,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.of(context).pushNamed(LocationActivity.Tag);
+                        Navigator.push(context, PageTransition(
+                            child: SubscriptionActivity(), type: PageTransitionType.bottomToTop));
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(top: 8.0),
