@@ -1,5 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:shifter/features/shifter/presentation/pages/candidateactivity/local_candidate_page.dart';
 import 'package:shifter/features/shifter/presentation/pages/locationactivity/location_activity.dart';
 import 'package:shifter/features/shifter/presentation/widgets/swipecards/userswipecard.dart';
 import 'package:shifter/utils/consants.dart';
@@ -382,8 +384,8 @@ class _UserHomePageState extends State<UserHomePage> {
                                           margin: EdgeInsets.symmetric(horizontal: 8),
                                           child: ElevatedButton(
                                             onPressed: () {
-                                              Navigator.of(context)
-                                                  .pushNamed(LocationActivity.Tag);
+                                              Navigator.push(context, PageTransition(
+                                                  child: LocalCandidatePage(), type: PageTransitionType.bottomToTop));
                                             },
                                             child: Text(
                                               'View Profile',
@@ -510,8 +512,8 @@ class _UserHomePageState extends State<UserHomePage> {
                                           margin: EdgeInsets.symmetric(horizontal: 8),
                                           child: ElevatedButton(
                                             onPressed: () {
-                                              Navigator.of(context)
-                                                  .pushNamed(LocationActivity.Tag);
+                                              Navigator.push(context, PageTransition(
+                                                  child: LocalCandidatePage(), type: PageTransitionType.bottomToTop));
                                             },
                                             child: Text(
                                               'View Profile',
@@ -637,8 +639,8 @@ class _UserHomePageState extends State<UserHomePage> {
                                           margin: EdgeInsets.symmetric(horizontal: 8),
                                           child: ElevatedButton(
                                             onPressed: () {
-                                              Navigator.of(context)
-                                                  .pushNamed(LocationActivity.Tag);
+                                              Navigator.push(context, PageTransition(
+                                                  child: LocalCandidatePage(), type: PageTransitionType.bottomToTop));
                                             },
                                             child: Text(
                                               'View Profile',

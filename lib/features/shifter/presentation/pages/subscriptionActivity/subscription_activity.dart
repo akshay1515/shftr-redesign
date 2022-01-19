@@ -40,7 +40,7 @@ class _SubscriptionActivityState extends State<SubscriptionActivity> {
                     color: Colors.black,
                   ),
                   Positioned(
-                    top: 100,
+                    top: 120,
                     left: 16,
                     // right: 100,
                     child: Container(
