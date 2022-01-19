@@ -36,7 +36,8 @@ dependencies:
   pin_code_fields:
   responsive_framework:
   carousel_slider:
-  page_transition: 
+  page_transition:
+  font_awesome_flutter:
   tcard:
 
 
