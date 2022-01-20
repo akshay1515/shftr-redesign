@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:shifter/features/shifter/presentation/pages/jobactivity/job_details_activity.dart';
 import 'package:shifter/features/shifter/presentation/pages/locationactivity/location_activity.dart';
 import 'package:shifter/utils/fontconstant.dart';
 
@@ -72,8 +74,8 @@ class _JobPageState extends State<JobPage> {
                         padding: const EdgeInsets.only(bottom: 12.0),
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.of(context)
-                                .pushNamed(LocationActivity.Tag);
+                            Navigator.push(context, PageTransition(
+                                child: JobDetailsActivity(), type: PageTransitionType.bottomToTop));
                           },
                           child: PhysicalModel(
                             borderRadius: BorderRadius.circular(8.0),
@@ -345,8 +347,8 @@ class _JobPageState extends State<JobPage> {
                         padding: const EdgeInsets.only(bottom: 12.0),
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.of(context)
-                                .pushNamed(LocationActivity.Tag);
+                            Navigator.push(context, PageTransition(
+                                child: JobDetailsActivity(), type: PageTransitionType.bottomToTop));
                           },
                           child: PhysicalModel(
                             borderRadius: BorderRadius.circular(8.0),
@@ -618,8 +620,8 @@ class _JobPageState extends State<JobPage> {
                         padding: const EdgeInsets.only(bottom: 12.0),
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.of(context)
-                                .pushNamed(LocationActivity.Tag);
+                            Navigator.push(context, PageTransition(
+                                child: JobDetailsActivity(), type: PageTransitionType.bottomToTop));
                           },
                           child: PhysicalModel(
                             borderRadius: BorderRadius.circular(8.0),
@@ -887,6 +889,7 @@ class _JobPageState extends State<JobPage> {
                           ),
                         ),
                       ),
+
                     ],
                   ),
                 ],
