@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shifter/features/shifter/presentation/jobdetails/job-detail-page.dart';
+import 'package:shifter/features/shifter/presentation/pages/home/home.dart';
 import 'package:shifter/features/shifter/presentation/pages/homepage/userhomepage.dart';
 import 'package:shifter/features/shifter/presentation/pages/loginactivity/loginactivity.dart';
 import 'package:shifter/features/shifter/presentation/pages/loginactivity/otpactivity.dart';
@@ -18,7 +20,7 @@ class RouteGenerator {
       case SelectionScreen.Tag:
         return MaterialPageRoute(builder: (_) => SelectionScreen());
       case '/':
-        return MaterialPageRoute(builder: (_) => SplashScreen());
+        return MaterialPageRoute(builder: (_) => UserHome());
       case LoginActivity.Tag:
         return MaterialPageRoute(builder: (_) => LoginActivity());
       case NewUserDetails.Tag:
@@ -40,6 +42,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_)=>UserSkillSelect());
       case UserHomePage.Tag:
         return MaterialPageRoute(builder:(_)=>UserHomePage());
+      case JobDetailPage.Tag:
+        return MaterialPageRoute(builder: (_)=> JobDetailPage());
       default:
         return MaterialPageRoute(builder: (_) => SplashScreen());
     }

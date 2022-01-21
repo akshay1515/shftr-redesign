@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -29,8 +28,6 @@ bool _isLoading = false;
 
 class _NewUserDetailsState extends State<NewUserDetails> {
   final _currentDate = DateTime.now();
-  DateTime? _selectedDate;
-
   GlobalKey<FormState> _signUpFormKey = GlobalKey();
 
   TextEditingController _countryController = TextEditingController();
@@ -495,6 +492,10 @@ class _NewUserDetailsState extends State<NewUserDetails> {
                                         listen: false)
                                     .getCityFromZip(value, context)
                                     .then((value) {
+                                      if(_userCityController.text.trim().isNotEmpty){
+                                        FocusScope.of(context).unfocus();
+                                        FocusScope.of(context).requestFocus(_dobFocus);
+                                      }
                                 });
                               }
                             },
@@ -630,7 +631,7 @@ class _NewUserDetailsState extends State<NewUserDetails> {
                       margin: EdgeInsets.symmetric(horizontal: 8),
                       child: ElevatedButton(
                         onPressed: () {
-                          if (_signUpFormKey.currentState!.validate() || !_signUpFormKey.currentState!.validate() ) {
+                          if (_signUpFormKey.currentState!.validate() ) {
                             if (selection.userSelection == Constants.shifter) {
                               Navigator.of(context).pushNamed(UserCategory.Tag);
                             } else {
@@ -666,6 +667,7 @@ class _NewUserDetailsState extends State<NewUserDetails> {
 
   @override
   void initState() {
+    super.initState();
     Provider.of<LoginProvider>(context, listen: false)
         .getCountry()
         .then((value) {
@@ -699,9 +701,14 @@ class _NewUserDetailsState extends State<NewUserDetails> {
             child: child!,
           );
         }).then((value) {
-      setState(() {
-        _userDobController.text = DateFormat('dd/MMM/yyyy').format(value!);
-      });
+      if((_currentDate.difference(value!).inDays/365) > 18){
+        setState(() {
+          _userDobController.text = DateFormat('dd-MMM-yyyy').format(value);
+        });
+      }else{
+        _userDobController.text = "";
+        Fluttertoast.showToast(msg: "Your are young to start applying for Jobs");
+      }
     });
   }
 }

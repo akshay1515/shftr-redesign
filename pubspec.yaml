@@ -36,7 +36,7 @@ dependencies:
   pin_code_fields:
   shared_preferences:
   webview_flutter:
-
+  carousel_slider:
 
 
 dev_dependencies:
