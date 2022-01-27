@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shifter/features/shifter/presentation/widgets/swipecards/userswipecard.dart';
 import 'package:tcard/tcard.dart';
 import 'package:shifter/utils/fontconstant.dart';
 
@@ -19,32 +20,32 @@ class _CandidatePageState extends State<CandidatePage> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> cards = List.generate(
-      tinderStyleImages.length,
-      (int index) {
-        return Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16.0),
-            boxShadow: [
-              BoxShadow(
-                offset: Offset(0, 17),
-                blurRadius: 23.0,
-                spreadRadius: -13.0,
-                color: Colors.black54,
-              )
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(16.0),
-            child: Image.network(
-              tinderStyleImages[index],
-              fit: BoxFit.cover,
-            ),
-          ),
-        );
-      },
-    );
+    // List<Widget> cards = List.generate(
+    //   tinderStyleImages.length,
+    //   (int index) {
+    //     return Container(
+    //       decoration: BoxDecoration(
+    //         color: Colors.white,
+    //         borderRadius: BorderRadius.circular(16.0),
+    //         boxShadow: [
+    //           BoxShadow(
+    //             offset: Offset(0, 17),
+    //             blurRadius: 23.0,
+    //             spreadRadius: -13.0,
+    //             color: Colors.black54,
+    //           )
+    //         ],
+    //       ),
+    //       child: ClipRRect(
+    //         borderRadius: BorderRadius.circular(16.0),
+    //         child: Image.network(
+    //           tinderStyleImages[index],
+    //           fit: BoxFit.cover,
+    //         ),
+    //       ),
+    //     );
+    //   },
+    // );
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: Padding(
@@ -71,14 +72,7 @@ class _CandidatePageState extends State<CandidatePage> {
               ),
             ),
             //
-            Container(
-              height: 500,
-              width: 500,
-              child: TCard(
-                size: Size(100, 200),
-                cards: cards,
-              ),
-            ),
+           UserSwipeCards()
           ],
         ),
       ),

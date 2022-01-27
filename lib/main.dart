@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
@@ -5,6 +6,7 @@ import 'package:responsive_framework/utils/scroll_behavior.dart';
 import 'package:shifter/features/shifter/presentation/provider/businessprovider/businessprovider.dart';
 import 'package:shifter/features/shifter/presentation/provider/jobcategoryprovider/jobcategoryprovider.dart';
 import 'package:shifter/features/shifter/presentation/provider/loginprovider/login_activity_provider.dart';
+import 'package:shifter/features/shifter/presentation/provider/recruiterprovider/recruiter_provider.dart';
 import 'package:shifter/features/shifter/presentation/provider/selectionprovider/selection_activity_provider.dart';
 import 'package:shifter/features/shifter/presentation/provider/userskillprovider/userskillprovider.dart';
 import 'package:shifter/features/shifter/presentation/provider/userswipecardprovider.dart';
@@ -12,7 +14,9 @@ import 'package:shifter/utils/colorconstant.dart';
 import 'package:shifter/utils/routes.dart';
 import '../features/shifter/presentation/pages/splashactivity/splashscreen.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -30,6 +34,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: CategoryProvider()),
         ChangeNotifierProvider.value(value: UserSkillProvider()),
         ChangeNotifierProvider.value(value: UserSwipeCardProvider()),
+        ChangeNotifierProvider.value(value: RecruiterProvider()),
       ],
       
       child: MaterialApp(

@@ -9,9 +9,9 @@ import 'package:shifter/features/shifter/presentation/pages/profileactivity/prof
 
 class NavScreen extends StatefulWidget {
   static const String Tag = "-/navscreen";
-  const NavScreen({ Key? key,  this.title,  this.uid}): super(key: key);
+  const NavScreen({ Key? key,  this.title,  this.id}): super(key: key);
   //update the constructor to include the uid
-  final String? uid, title; //include this
+  final String? id, title; //include this
 
   @override
   _NavScreenState createState() => _NavScreenState();
@@ -20,7 +20,7 @@ class NavScreen extends StatefulWidget {
 class _NavScreenState extends State<NavScreen> {
   int _selectedIndex = 0;
   final _screens = [
-   const UserHomePage(),
+   const UserHomePage(id: "1",),
     const CandidatePage(),
     const InterviewPage(),
     const JobPage(),

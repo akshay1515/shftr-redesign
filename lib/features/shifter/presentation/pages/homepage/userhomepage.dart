@@ -1,8 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
 import 'package:shifter/features/shifter/presentation/pages/candidateactivity/local_candidate_page.dart';
 import 'package:shifter/features/shifter/presentation/pages/locationactivity/location_activity.dart';
+import 'package:shifter/features/shifter/presentation/provider/recruiterprovider/recruiter_provider.dart';
 import 'package:shifter/features/shifter/presentation/widgets/swipecards/userswipecard.dart';
 import 'package:shifter/utils/consants.dart';
 import 'package:shifter/utils/fontconstant.dart';
@@ -10,13 +12,15 @@ import 'package:shifter/utils/fontconstant.dart';
 class UserHomePage extends StatefulWidget {
   static const String Tag = "-/userhomepage";
 
-  const UserHomePage({Key? key}) : super(key: key);
+  const UserHomePage({Key? key, this.id}) : super(key: key);
+  final String? id;
 
   @override
   State<UserHomePage> createState() => _UserHomePageState();
 }
 
 class _UserHomePageState extends State<UserHomePage> {
+  bool _isLoading = false;
   CarouselController buttonCarouselController = CarouselController();
   List imgList = [1, 2, 3, 4, 5];
   int _currentIndex = 0;
@@ -28,9 +32,21 @@ class _UserHomePageState extends State<UserHomePage> {
     }
     return result;
   }
+  @override
+  void initState() {
+    Provider.of<RecruiterProvider>(context, listen: false)
+        .sendRecruiterData(context, "2")
+        .then((value) {
+      setState(() {
+        _isLoading = true;
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+   final recruiterData = Provider.of<RecruiterProvider>(context);
     return Scaffold(
         extendBodyBehindAppBar: true,
         backgroundColor: Colors.white,
@@ -74,7 +90,7 @@ class _UserHomePageState extends State<UserHomePage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Welcome Recruiter!",
+                                      "Welcome !",
                                       style: TextStyle(
                                           fontSize: 22,
                                           fontFamily: "Poppins",
@@ -83,16 +99,25 @@ class _UserHomePageState extends State<UserHomePage> {
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                                    Text(
-                                      "Test Company",
-                                      style: TextStyle(
-                                          fontSize: 26,
-                                          fontFamily: "Poppins",
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
+                                   _isLoading ?  Text(
+                                     "Test",
+                                     style: TextStyle(
+                                         fontSize: 26,
+                                         fontFamily: "Poppins",
+                                         fontWeight: FontWeight.w600,
+                                         color: Colors.white),
+                                     maxLines: 1,
+                                     overflow: TextOverflow.ellipsis,
+                                   ) :  Text(
+                                     "Test",
+                                     style: TextStyle(
+                                         fontSize: 26,
+                                         fontFamily: "Poppins",
+                                         fontWeight: FontWeight.w600,
+                                         color: Colors.white),
+                                     maxLines: 1,
+                                     overflow: TextOverflow.ellipsis,
+                                   )
                                   ],
                                 ),
                                 Container(

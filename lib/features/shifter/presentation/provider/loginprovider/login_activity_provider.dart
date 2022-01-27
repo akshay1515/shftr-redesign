@@ -47,6 +47,18 @@ class LoginProvider with ChangeNotifier {
         element.cCode == "+1" && element.cName == "United States of America");
   }
 
+  Future sendOTPMobile() async{
+    final String url = "https://demo.shifterteam.host/v1/getVerifyEmailMobileForOTP.php";
+    try {
+
+    }on TimeoutException {
+      rethrow;
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+
   Future<List<CountryModel>> getCountry() async {
     List<CountryModel> cModel = [];
 

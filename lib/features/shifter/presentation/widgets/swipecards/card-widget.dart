@@ -39,12 +39,63 @@ class _CardWidgetState extends State<CardWidget> {
   Widget JobCard() {
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
-      child: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              image: NetworkImage(widget.urlImage),
-              fit: BoxFit.cover,
-              alignment: Alignment(-0.3, 0)),
+      child: PhysicalModel(
+        borderRadius: BorderRadius.circular(5.0),
+        color: Colors.white,
+        elevation: 2,
+        shadowColor: Colors.grey,
+        child: Container(
+          child: Column(
+            children: [
+              Center(
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        image: NetworkImage(widget.urlImage, ),
+                        fit: BoxFit.cover,
+                        alignment: Alignment(-0.3, 0)
+                    ),
+                  ),
+                ),
+              ),
+              Center(
+                child:  Text(
+                  "Candidate Name",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'Poppins',
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+              Center(
+                child: Text(
+                  "Candidate's Niche",
+                  style: TextStyle(
+                      color: Colors.black54,
+                      fontSize: FontConstant.Tagline_text,
+                      fontFamily: 'Poppins'
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Container(
+                  height: MediaQuery.of(context).size.height / 2.09,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(8.0)
+                  ),
+                ),
+              )
+
+            ],
+          ),
         ),
       ),
     );

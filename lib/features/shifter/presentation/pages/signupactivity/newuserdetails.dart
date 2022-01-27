@@ -346,10 +346,10 @@ class _NewUserDetailsState extends State<NewUserDetails> {
                                   ],
                                   validator: (value) {
                                     if (value!.isNotEmpty) {
-                                      if (value.length != 10) {
-                                        return "Enter valid mobile number";
-                                      } else {
+                                      if(value.length == 10 || value.length == 9){
                                         return null;
+                                      }else {
+                                        return "Enter valid mobile number";
                                       }
                                     } else {
                                       return "Mobile number is required";
@@ -636,8 +636,8 @@ class _NewUserDetailsState extends State<NewUserDetails> {
                           //   } else {
                               Navigator.of(context)
                                   .pushNamed(RegisterBusiness.Tag);
-                            //}
-                        //  }
+                         //    }
+                         // }
                         },
                         child: Text(
                           selection.userSelection == Constants.shifter

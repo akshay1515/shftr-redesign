@@ -21,7 +21,7 @@ class SelectionScreen extends StatelessWidget {
         decoration: BoxDecoration(
             image: DecorationImage(
                 image: AssetImage("assets/images/splash/splashimage.png"),
-                fit: BoxFit.fill)),
+                fit: BoxFit.cover)),
         child: Container(
           height: size.height,
           width: size.width,

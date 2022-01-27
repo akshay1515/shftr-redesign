@@ -20,7 +20,7 @@ class SplashScreen extends StatelessWidget {
         decoration: BoxDecoration(
             image: DecorationImage(
                 image: AssetImage('assets/images/splash/splashimage.png'),
-                fit: BoxFit.fill,
+                fit: BoxFit.cover,
                 alignment: Alignment.center)),
         child: Container(
           alignment: Alignment.center,

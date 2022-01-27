@@ -5,6 +5,7 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
 import 'package:shifter/features/shifter/presentation/pages/signupactivity/newuserdetails.dart';
 import 'package:shifter/features/shifter/presentation/provider/loginprovider/login_activity_provider.dart';
+import 'package:shifter/features/shifter/presentation/widgets/bottom_navigation.dart';
 import 'package:shifter/utils/colorconstant.dart';
 
 class OTPActivity extends StatelessWidget {
@@ -74,38 +75,40 @@ class OTPActivity extends StatelessWidget {
                     height: 5,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 90),
+                    padding: const EdgeInsets.only(left: 30, right: 30),
                     child: Container(
-                      width: size.width * 0.5,
-                      child: PinCodeTextField(
-                        pastedTextStyle: TextStyle(fontWeight: FontWeight.bold),
-                        controller: OTPController,
-                        textInputAction: TextInputAction.done,
-                        enableActiveFill: true,
-                        keyboardType: TextInputType.phone,
-                        textStyle: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.bold),
-                        cursorColor: Colors.black54,
-                        onChanged: (String Value) {},
-                        enablePinAutofill: true,
-                        appContext: context,
-                        length: 4,
-                        pinTheme: PinTheme(
-                          shape: PinCodeFieldShape.box,
-                          fieldHeight: 40,
-                          fieldWidth: 35,
-                          borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(2),
-                              bottomRight: Radius.circular(2),
-                              topLeft: Radius.circular(2),
-                              bottomLeft: Radius.circular(2),
-                          ),
-                          activeColor: ColorConstant.primary,
-                          inactiveColor: Colors.grey.shade600,
-                          inactiveFillColor: Colors.transparent,
-                          activeFillColor: Colors.transparent,
-                          selectedColor: ColorConstant.primary,
-                          selectedFillColor: Colors.transparent,
+                      width: size.width,
+                      child: Center(
+                        child: PinCodeTextField(
+                          pastedTextStyle: TextStyle(fontWeight: FontWeight.bold),
+                          controller: OTPController,
+                          textInputAction: TextInputAction.done,
+                          enableActiveFill: true,
+                          keyboardType: TextInputType.phone,
+                          textStyle: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.bold),
+                          cursorColor: Colors.black54,
+                          onChanged: (String Value) {},
+                          enablePinAutofill: true,
+                          appContext: context,
+                          length: 6,
+                          pinTheme: PinTheme(
+                            shape: PinCodeFieldShape.box,
+                            fieldHeight: 40,
+                            fieldWidth: 35,
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(2),
+                                bottomRight: Radius.circular(2),
+                                topLeft: Radius.circular(2),
+                                bottomLeft: Radius.circular(2),
+                            ),
+                            activeColor: ColorConstant.primary,
+                            inactiveColor: Colors.grey.shade600,
+                            inactiveFillColor: Colors.transparent,
+                            activeFillColor: Colors.transparent,
+                            selectedColor: ColorConstant.primary,
+                            selectedFillColor: Colors.transparent,
 
+                          ),
                         ),
                       ),
                     ),
@@ -131,7 +134,8 @@ class OTPActivity extends StatelessWidget {
                     margin: EdgeInsets.symmetric(horizontal: 25),
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.of(context).pushNamed(NewUserDetails.Tag,arguments: {"mobile" : OTPController.text});
+                        Navigator.of(context).pushNamed(NavScreen.Tag, arguments: {"id" : "2" });
+                        //Navigator.of(context).pushNamed(NewUserDetails.Tag,arguments: {"mobile" : OTPController.text});
                       },
                       child: Text(
                         'Verify',
