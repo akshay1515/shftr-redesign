@@ -20,7 +20,7 @@ class NavScreen extends StatefulWidget {
 class _NavScreenState extends State<NavScreen> {
   int _selectedIndex = 0;
   final _screens = [
-   const UserHomePage(id: "1",),
+   const UserHomePage(),
     const CandidatePage(),
     const InterviewPage(),
     const JobPage(),
