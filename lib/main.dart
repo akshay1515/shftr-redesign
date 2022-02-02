@@ -8,6 +8,7 @@ import 'package:shifter/features/shifter/presentation/provider/jobcategoryprovid
 import 'package:shifter/features/shifter/presentation/provider/loginprovider/login_activity_provider.dart';
 import 'package:shifter/features/shifter/presentation/provider/recruiterprovider/recruiter_provider.dart';
 import 'package:shifter/features/shifter/presentation/provider/selectionprovider/selection_activity_provider.dart';
+import 'package:shifter/features/shifter/presentation/provider/signupprovider/signup_provider.dart';
 import 'package:shifter/features/shifter/presentation/provider/userskillprovider/userskillprovider.dart';
 import 'package:shifter/features/shifter/presentation/provider/userswipecardprovider.dart';
 import 'package:shifter/utils/colorconstant.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: UserSkillProvider()),
         ChangeNotifierProvider.value(value: UserSwipeCardProvider()),
         ChangeNotifierProvider.value(value: RecruiterProvider()),
+        ChangeNotifierProvider.value(value: SignUpProvider()),
       ],
       
       child: MaterialApp(

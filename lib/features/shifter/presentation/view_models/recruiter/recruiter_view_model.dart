@@ -1,4 +1,4 @@
-import 'package:shifter/features/shifter/presentation/models/recruiter.dart';
+import 'package:shifter/features/shifter/presentation/models/recruiter/recruiter.dart';
 
 class RecruiterViewModel{
   late Recruiter _recruiter;

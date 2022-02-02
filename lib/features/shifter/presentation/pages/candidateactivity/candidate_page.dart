@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shifter/features/shifter/presentation/widgets/swipecards/userswipecard.dart';
-import 'package:tcard/tcard.dart';
 import 'package:shifter/utils/fontconstant.dart';
 
 class CandidatePage extends StatefulWidget {

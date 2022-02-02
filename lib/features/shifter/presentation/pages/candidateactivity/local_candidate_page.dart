@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shifter/features/shifter/presentation/pages/locationactivity/location_activity.dart';
 import 'package:shifter/features/shifter/presentation/widgets/customchips.dart';
 import 'package:shifter/utils/colorconstant.dart';
+import 'package:shifter/utils/consants.dart';
 import 'package:shifter/utils/fontconstant.dart';
 
 class LocalCandidatePage extends StatefulWidget {
@@ -57,9 +58,11 @@ class _LocalCandidatePageState extends State<LocalCandidatePage> {
                           borderRadius: BorderRadius.circular(8.0),
                           image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: NetworkImage(
-                              'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cGVyc29ufGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60',
-                            ),
+                            image: AssetImage(
+                                        "assets/images/logo.png"),
+                            // image: NetworkImage(
+                            //   'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cGVyc29ufGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60',
+                            // ),
                           ),
                         ),
                       ),
@@ -69,7 +72,7 @@ class _LocalCandidatePageState extends State<LocalCandidatePage> {
                     ),
                     Center(
                       child: Text(
-                        "Candidate Name",
+                        "Ben Trem",
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -79,7 +82,7 @@ class _LocalCandidatePageState extends State<LocalCandidatePage> {
                     ),
                     Center(
                       child: Text(
-                        "Work as occupation name",
+                        "Freelancer",
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.normal,
@@ -99,7 +102,7 @@ class _LocalCandidatePageState extends State<LocalCandidatePage> {
                             size: 18.0,
                           ),
                           Text(
-                            "Candidate registered location",
+                            "Rochester, NY",
                             style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w400,
@@ -123,13 +126,13 @@ class _LocalCandidatePageState extends State<LocalCandidatePage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                "Experience Level",
+                                "Entry Level",
                                 style: TextStyle(
                                     fontSize: 18,
                                     color: Colors.black,
@@ -153,7 +156,7 @@ class _LocalCandidatePageState extends State<LocalCandidatePage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                "Masters",
+                                "12th",
                                 style: TextStyle(
                                     fontSize: 18,
                                     color: Colors.black,
@@ -463,7 +466,7 @@ class _LocalCandidatePageState extends State<LocalCandidatePage> {
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: 180.0,
+                height: 300.0,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: Column(
@@ -489,7 +492,7 @@ class _LocalCandidatePageState extends State<LocalCandidatePage> {
                             fontSize: FontConstant.Mini_Tagline_text),
                       ),
                       Text(
-                        "Lorem ipsum dolor sit amet,consectetur adipiscing elit,consectetur adipiscingLorem ipsum dolor sit amet,",
+                        "about me about me about me about me about meabout me about me about me about me about meabout me about me about me about me about meabout me about me about me about me about meabout me about me about me about me about meabout me about me about about me about me",
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.w400,
@@ -497,7 +500,7 @@ class _LocalCandidatePageState extends State<LocalCandidatePage> {
                             fontSize: FontConstant.Tagline_text),
                       ),
                       SizedBox(
-                        height: 10.0,
+                        height: 20.0,
                       ),
                     ],
                   ),
@@ -513,7 +516,7 @@ class _LocalCandidatePageState extends State<LocalCandidatePage> {
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: 250.0,
+                height: 360.0,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: Column(
@@ -539,14 +542,152 @@ class _LocalCandidatePageState extends State<LocalCandidatePage> {
                             fontSize: FontConstant.Mini_Tagline_text),
                       ),
                       Container(
-                          //
+                        height: 270,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Container(
+                                height: 35,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.withOpacity(0.4),
+                                  borderRadius: BorderRadius.circular(20.0)
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text("Monday(7:00 AM - 6:30 PM)",
+                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15.0),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Container(
+                                height: 35,
+                                decoration: BoxDecoration(
+                                    color: Colors.grey.withOpacity(0.4),
+                                    borderRadius: BorderRadius.circular(20.0)
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text("Tuesday(7:00 AM - 6:30 PM)",
+                                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15.0),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Container(
+                                height: 35,
+                                decoration: BoxDecoration(
+                                    color: Colors.grey.withOpacity(0.4),
+                                    borderRadius: BorderRadius.circular(20.0)
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text("Wednesday(7:00 AM - 6:30 PM)",
+                                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15.0),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Container(
+                                height: 35,
+                                decoration: BoxDecoration(
+                                    color: Colors.grey.withOpacity(0.4),
+                                    borderRadius: BorderRadius.circular(20.0)
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text("Thursday(7:00 AM - 6:30 PM)",
+                                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15.0),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Container(
+                                height: 35,
+                                decoration: BoxDecoration(
+                                    color: Colors.grey.withOpacity(0.4),
+                                    borderRadius: BorderRadius.circular(20.0)
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text("Friday(7:00 AM - 6:30 PM)",
+                                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15.0),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Container(
+                                height: 35,
+                                decoration: BoxDecoration(
+                                    color: Colors.grey.withOpacity(0.4),
+                                    borderRadius: BorderRadius.circular(20.0)
+                                ),
+
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text("Saturday(7:00 AM - 6:30 PM)",
+                                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15.0),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                           ),
                       SizedBox(
                         height: 20.0,
                       ),
+
                     ],
                   ),
                 ),
+              ),
+              SizedBox(
+                height: 15.0,
+              ),
+              Container(
+                  height: 220.0,
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.grey.withOpacity(0.3),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        Text(
+                          Constants.app_title,
+                          style: TextStyle(
+                              fontSize: 36,
+                              fontFamily: "Pacifico",
+                              fontWeight: FontWeight.w700,
+                              color: Colors.grey),
+                        ),
+                        Text(
+                          " \"Developing a good work ethic is key. Apply yourself at whatever you do, whether you're a janitor or taking your "
+                              "first summer job because that work ethic will be reflected in everything you do in your life.\"",
+                          style: TextStyle(color: Colors.grey),
+                        )
+                      ],
+                    ),
+                  )),
+              SizedBox(
+                height: 15.0,
               ),
             ],
           ),

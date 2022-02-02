@@ -39,8 +39,8 @@ dependencies:
   responsive_framework:
   carousel_slider:
   page_transition:
+  shared_preferences:
   font_awesome_flutter:
-  tcard:
 
 
 

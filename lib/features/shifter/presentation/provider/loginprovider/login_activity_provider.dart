@@ -14,6 +14,10 @@ class LoginProvider with ChangeNotifier {
 
   String get companycity => _companycity;
 
+  String _userstate ='';
+
+  String get userstate => _userstate;
+
   List<CountryModel> _countryList = [];
 
   List<CountryModel> _filteredCountryList = [];
@@ -132,11 +136,11 @@ class LoginProvider with ChangeNotifier {
           final _splitCity = _cityname.split(',');
           _cityname = _splitCity[0];
           final _stateMap = decoded['results'][0]['address_components'];
-          /*for(int i = 0; i < _stateMap.length;i++){
+          for(int i = 0; i < _stateMap.length;i++){
           if(_stateMap[i]['types'].contains("administrative_area_level_1")){
-            _companystate = decoded['results'][0]['address_components'][i]['long_name'];
+            _userstate = decoded['results'][0]['address_components'][i]['long_name'];
           }
-        }*/
+        }
         } else {
           showErrorMessage(
               context: context,
