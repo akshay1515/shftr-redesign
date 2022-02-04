@@ -40,6 +40,7 @@ dependencies:
   carousel_slider:
   page_transition:
   shared_preferences:
+  flutter_credit_card:
   font_awesome_flutter:
 
 

@@ -1,12 +1,230 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shifter/features/shifter/presentation/models/recruiter/packages.dart';
+import 'package:shifter/features/shifter/presentation/models/recruiter/features.dart';
 import 'dart:async';
 
 import 'package:shifter/features/shifter/presentation/models/recruiter/recruiter.dart';
 
-class RecruiterPreferences {
-  Future<bool> saveRecruiter(Recruiter recruiter) async {
+class Preferences {
+  // Future<bool> savePlan(PlanFeatures planFeatures) async{
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   //
+  //   // prefs.setString("planId", planFeatures.id ?? "");
+  //   // prefs.setString("feature", planFeatures.feature ?? "");
+  //   // prefs.setString("packageId", planFeatures.packageId ?? "");
+  //   // prefs.setString("status", planFeatures.status ?? "");
+  //   return prefs.commit();
+  // }
+  //
+  // Future<PlanFeatures> getPlan() async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //
+  //   String planId = prefs.getString("planId") ?? "";
+  //   String feature = prefs.getString("feature") ?? "";
+  //   String packageId = prefs.getString("packageId") ?? "";
+  //   String status = prefs.getString("status") ?? "";
+  //   //
+  //   // return PlanFeatures(
+  //   //     id: planId,
+  //   //     feature: feature,
+  //   //     packageId: packageId,
+  //   //     status: status
+  //   // );
+  //
+  //
+  // }
+
+  void removePlan() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove("planId");
+    prefs.remove("feature");
+    prefs.remove("status");
+    prefs.remove("packageId");
+  }
+
+  Future<bool> savePackage(Package packages) async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
+    prefs.setString("packageID", packages.id ?? "0");
+    prefs.setString("packageName", packages.packageName ?? "");
+    prefs.setString("shortDescription", packages.shortDescription ?? "");
+    prefs.setString("adminFee", packages.adminFee ?? "");
+    return prefs.commit();
+  }
+
+  Future<bool> savePackageId(String packageId) async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("packageId", packageId);
+    return prefs.commit();
+  }
+
+   getPackageId() async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String packageId = prefs.getString("packageId") ?? "" ;
+    return packageId;
+  }
+
+  Future<bool> saveController( String displayId,
+      String ein,
+      String ssn,
+      String naice,
+      String dob,
+      String businessType,
+      String companyName,
+      String companyZipcode,
+      String companyState,
+      String companyCity,
+      String city,
+      String state,
+      String zipCode,
+      String name,
+      String email,
+      String phoneNumber,
+      String password,
+      String countryCode,
+      int packageId,
+      String activateDate,
+      String expireDate,
+      String countryId,
+      String stateId,
+      String cityId)async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("Ein", ein);
+    prefs.setString("Ssn", ssn);
+    prefs.setString("Naice", naice);
+    prefs.setString("DOB", dob);
+    prefs.setString("BusinessType", businessType);
+    prefs.setString("CompanyName", companyName);
+    prefs.setString("CompanyZipcode", companyZipcode);
+    prefs.setString("CompanyState", companyState);
+    prefs.setString("CompanyCity", companyCity);
+    prefs.setString("City", city);
+    prefs.setString("State", state);
+    prefs.setString("ZipCode", zipCode);
+    prefs.setString("Name", name);
+    prefs.setString("Email", email);
+    prefs.setString("Phone", phoneNumber);
+    prefs.setString("Password", password);
+    prefs.setString("CountryCode", countryCode);
+    prefs.setInt("PackageId", packageId);
+    prefs.setString("ActivateDate", activateDate);
+    prefs.setString("ExpireDate", expireDate);
+    prefs.setString("CountryId", countryId);
+    prefs.setString("StateId", stateId);
+    prefs.setString("CityId", cityId);
+
+    return prefs.commit();
+  }
+
+  Future<Recruiter> getController() async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String ein = prefs.getString("Ein") ?? "" ;
+    String ssn = prefs.getString("Ssn") ?? "" ;
+    String naice = prefs.getString("Naice") ?? "" ;
+    String dob = prefs.getString("DOB") ?? "" ;
+    String businessType = prefs.getString("BusinessType") ?? "" ;
+    String companyName = prefs.getString("CompanyName") ?? "" ;
+    String companyZipcode = prefs.getString("CompanyZipcode") ?? "" ;
+    String companyState = prefs.getString("CompanyState") ?? "" ;
+    String companyCity = prefs.getString("CompanyCity") ?? "" ;
+    String city = prefs.getString("City") ?? "" ;
+    String state = prefs.getString("State") ?? "" ;
+    String zipCode = prefs.getString("ZipCode") ?? "" ;
+    String name = prefs.getString("Name") ?? "" ;
+    String email = prefs.getString("Email") ?? "" ;
+    String phoneNumber = prefs.getString("Phone") ?? "" ;
+    String password = prefs.getString("Password") ?? "" ;
+    String countryCode = prefs.getString("CountryCode") ?? "" ;
+    int packageId = prefs.getInt("PackageId") ?? 0 ;
+    String activateDate = prefs.getString("ActivateDate") ?? "" ;
+    String expireDate = prefs.getString("ExpireDate") ?? "" ;
+    String countryId = prefs.getString("CountryId") ?? "" ;
+    String stateId = prefs.getString("StateId") ?? "" ;
+    String cityId = prefs.getString("CityId") ?? "" ;
+
+
+ return   Recruiter(
+      ein: ein,
+      ssn: ssn,
+      dob: dob,
+      naice: naice,
+      businessType: businessType,
+      companyName: companyName,
+      companyZipcode: companyZipcode,
+      companyState: companyState,
+      companyCity: companyCity,
+      city: city,
+      state: state,
+      zipCode: zipCode,
+      name: name,
+      email: email,
+      phoneNumber: phoneNumber,
+      password: password,
+      countryCode: countryCode,
+      activateDate: activateDate,
+      expireDate: expireDate,
+      countryId: countryId,
+      stateId: stateId,
+      cityId: cityId,
+    );
+
+  }
+  Future<Package> getPackage() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String packageId = prefs.getString("packageID") ?? "";
+    String packageName = prefs.getString("packageName") ?? "";
+    String shortDescription = prefs.getString("shortDescription") ?? "";
+    String adminFee = prefs.getString("adminFee") ?? "";
+
+    return Package(
+      id: packageId,
+      packageName: packageName,
+      shortDescription: shortDescription,
+      adminFee: adminFee
+    );
+
+  }
+
+  void removeController() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.getString("Ein")  ;
+    prefs.getString("Ssn");
+     prefs.getString("Naice")  ;
+  prefs.getString("DOB") ;
+    prefs.getString("BusinessType") ;
+    prefs.getString("CompanyName");
+    prefs.getString("CompanyZipcode");
+    prefs.getString("CompanyState") ;
+  prefs.getString("CompanyCity") ;
+    prefs.getString("City") ;
+    prefs.getString("State")  ;
+    prefs.getString("ZipCode");
+   prefs.getString("Name") ;
+  prefs.getString("Email")  ;
+    prefs.getString("Phone")  ;
+   prefs.getString("Password")  ;
+     prefs.getString("CountryCode") ;
+   prefs.getInt("PackageId") ;
+    prefs.getString("ActivateDate") ;
+   prefs.getString("ExpireDate");
+    prefs.getString("CountryId") ;
+   prefs.getString("StateId") ;
+    prefs.getString("CityId");
+
+  }
+
+  void removePackage() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.remove("packageId");
+    prefs.remove("packageName");
+    prefs.remove("shortDescription");
+    prefs.remove("adminFee");
+  }
+
+  Future<bool> saveRecruiter(Recruiter recruiter) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("id", recruiter.id ?? "");
     prefs.setString("displayId", recruiter.displayId ?? "");
     prefs.setString("fcmToken", recruiter.fcmToken ?? "");

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shifter/features/shifter/presentation/pages/homepage/userhomepage.dart';
 import 'package:shifter/features/shifter/presentation/pages/locationactivity/location_activity.dart';
 import 'package:shifter/features/shifter/presentation/pages/loginactivity/loginactivity.dart';
-import 'package:shifter/features/shifter/presentation/pages/loginactivity/otpactivity.dart';
+import 'package:shifter/features/shifter/presentation/pages/loginactivity/otpmailactivity.dart';
 import 'package:shifter/features/shifter/presentation/pages/profileactivity/updateProfileActivity/update_personal_activity.dart';
 import 'package:shifter/features/shifter/presentation/pages/profileactivity/walletactivity/wallet_page.dart';
 import 'package:shifter/features/shifter/presentation/pages/selectionactivity/selectionscreen.dart';
@@ -27,10 +27,17 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => LoginActivity());
       case NewUserDetails.Tag:
         return MaterialPageRoute(builder: (_) => NewUserDetails());
-      case OTPActivity.Tag:
+      // case OTPActivity.Tag:
+      //   if (args is Map) {
+      //     return MaterialPageRoute(
+      //         builder: (_) => OTPActivity(mobileNumber: args['mobile']));
+      //   } else {
+      //     return MaterialPageRoute(builder: (_) => LoginActivity());
+      //   }
+      case OTPMailActivity.Tag:
         if (args is Map) {
           return MaterialPageRoute(
-              builder: (_) => OTPActivity(mobileNumber: args['mobile']));
+              builder: (_) => OTPMailActivity(email: args['email']));
         } else {
           return MaterialPageRoute(builder: (_) => LoginActivity());
         }

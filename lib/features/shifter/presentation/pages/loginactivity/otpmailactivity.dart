@@ -1,14 +1,15 @@
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shifter/features/shifter/presentation/provider/loginprovider/login_activity_provider.dart';
+import 'package:shifter/features/shifter/presentation/widgets/bottom_navigation.dart';
 import 'package:shifter/features/shifter/presentation/widgets/planswidget/plan_widget.dart';
 import 'package:shifter/utils/colorconstant.dart';
 
-class OTPActivity extends StatefulWidget {
+class OTPMailActivity extends StatefulWidget {
+
   final String?  displayId,
       ein,
       ssn,
@@ -34,43 +35,41 @@ class OTPActivity extends StatefulWidget {
       cityId;
   final int? packageId;
 
-
-  OTPActivity({Key? key, this.displayId,
-     this.ein,
-     this.ssn,
-     this.naice,
-     this.dob,
-     this.businessType,
-     this.companyName,
-     this.companyZipcode,
-     this.companyCity,
-     this.companyState,
-     this.city,
-     this.state,
-     this.zipcode,
-     this.fullName,
-     this.email,
-     this.phone,
-     this.password,
-     this.countryCode,
-     this.activateDate,
-     this.expiryDate,
-     this.countryId,
-     this.stateId,
-     this.cityId,
-     this.packageId }) : super(key: key);
+  OTPMailActivity({Key? key, this.displayId,
+    this.ein,
+    this.ssn,
+    this.naice,
+    this.dob,
+    this.businessType,
+    this.companyName,
+    this.companyZipcode,
+    this.companyCity,
+    this.companyState,
+    this.city,
+    this.state,
+    this.zipcode,
+    this.fullName,
+    this.email,
+    this.phone,
+    this.password,
+    this.countryCode,
+    this.activateDate,
+    this.expiryDate,
+    this.countryId,
+    this.stateId,
+    this.cityId,
+    this.packageId }) : super(key: key);
 
   @override
-  State<OTPActivity> createState() => _OTPActivityState();
+  State<OTPMailActivity> createState() => _OTPMailActivityState();
 }
 
-class _OTPActivityState extends State<OTPActivity> {
+class _OTPMailActivityState extends State<OTPMailActivity> {
   TextEditingController OTPController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final country = Provider.of<LoginProvider>(context).selectedCountry;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -111,17 +110,17 @@ class _OTPActivityState extends State<OTPActivity> {
                   ),
                   Text.rich(
                       TextSpan(
-                      children: [
-                        TextSpan(
-                            text: "We have sent you on ",
-                            style: TextStyle(fontSize: 13)),
-                        TextSpan(
-                            text: "${country!.cCode} ${widget.phone}",
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w600)),
-                      ],
-                      style: TextStyle(
-                          color: Colors.black87, fontFamily: "Poppins"))
+                          children: [
+                            TextSpan(
+                                text: "We have sent you on ",
+                                style: TextStyle(fontSize: 13)),
+                            TextSpan(
+                                text: "${widget.email}",
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.w600)),
+                          ],
+                          style: TextStyle(
+                              color: Colors.black87, fontFamily: "Poppins"))
                   ),
                   SizedBox(
                     height: 5,
@@ -148,10 +147,10 @@ class _OTPActivityState extends State<OTPActivity> {
                             fieldHeight: 40,
                             fieldWidth: 35,
                             borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(2),
-                                bottomRight: Radius.circular(2),
-                                topLeft: Radius.circular(2),
-                                bottomLeft: Radius.circular(2),
+                              topRight: Radius.circular(2),
+                              bottomRight: Radius.circular(2),
+                              topLeft: Radius.circular(2),
+                              bottomLeft: Radius.circular(2),
                             ),
                             activeColor: ColorConstant.primary,
                             inactiveColor: Colors.grey.shade600,
@@ -253,25 +252,25 @@ class _OTPActivityState extends State<OTPActivity> {
                           "Didn't receive OTP? ",
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              color: Colors.black87,
-                              fontFamily: "Poppins",
-                              fontSize: 11,
-                              fontWeight: FontWeight.w400,
+                            color: Colors.black87,
+                            fontFamily: "Poppins",
+                            fontSize: 11,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                         RichText(
                           text: TextSpan(
-                            text: 'Resend',
-                            style: TextStyle(
-                                fontSize: 12.5,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.blue.shade300),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () => {
-                                Fluttertoast.showToast(
-                                    msg:
-                                    'Will resend the otp to your number')
-                              }),
+                              text: 'Resend',
+                              style: TextStyle(
+                                  fontSize: 12.5,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.blue.shade300),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () => {
+                                  Fluttertoast.showToast(
+                                      msg:
+                                      'Will resend the otp to your number')
+                                }),
                         ),
                       ],
                     ),

@@ -1,31 +1,31 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
-import 'package:shifter/features/shifter/presentation/models/recruiter/recruiter.dart';
-import 'package:shifter/features/shifter/presentation/pages/loginactivity/loginactivity.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shifter/features/shifter/presentation/pages/signupactivity/verify_activity.dart';
+
 import 'package:shifter/features/shifter/presentation/pages/user-category/usercategory.dart';
 import 'package:shifter/features/shifter/presentation/provider/businessprovider/businessprovider.dart';
 import 'package:shifter/features/shifter/presentation/provider/loginprovider/login_activity_provider.dart';
-import 'package:shifter/features/shifter/presentation/provider/recruiterprovider/recruiter_provider.dart';
 import 'package:shifter/features/shifter/presentation/provider/selectionprovider/selection_activity_provider.dart';
-import 'package:shifter/features/shifter/presentation/provider/signupprovider/signup_provider.dart';
 import 'package:shifter/features/shifter/presentation/widgets/countrybottomsheet.dart';
 import 'package:shifter/features/shifter/presentation/widgets/loadingscreen.dart';
+import 'package:shifter/features/shifter/presentation/widgets/planswidget/plan_widget.dart';
 import 'package:shifter/features/shifter/presentation/widgets/selectbusinesstype/naicecategory.dart';
-import 'package:shifter/features/shifter/presentation/widgets/show-error-dialog.dart';
 import 'package:shifter/utils/colorconstant.dart';
 import 'package:shifter/utils/consants.dart';
+import 'package:shifter/utils/preferences/recruiter_preferences.dart';
 
 class NewUserDetails extends StatefulWidget {
   static const Tag = "-/newuserscreen";
 
-  NewUserDetails({
-    Key? key,
-  }) : super(key: key);
+  NewUserDetails({Key? key}) : super(key: key);
 
   @override
   State<NewUserDetails> createState() => _NewUserDetailsState();
@@ -35,13 +35,18 @@ bool _isLoading = false;
 
 class _NewUserDetailsState extends State<NewUserDetails> {
   final _currentDate = DateTime.now();
+
   String _displayId = "0";
   String _expireDate = "";
   String _activateDate = "";
-  String _countryId = "0";
+
+
+   String _countryId = "0";
   String _stateId = "0";
   String _cityId = "0";
-  String _packageId = "0";
+  bool recruiterIsVerified = false;
+
+  // String _packageId = "3";
   DateTime? _selectedDate;
   int _currentStep = 0;
   var _businessType = [
@@ -53,8 +58,11 @@ class _NewUserDetailsState extends State<NewUserDetails> {
   ];
   String _currentBusinessType = 'Select business type';
 
-  GlobalKey<FormState> _signUpFormKey = GlobalKey();
+  GlobalKey<FormState> formKey = GlobalKey();
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  PageController _pageViewController = PageController(
+    initialPage: 0,
+  );
 
   TextEditingController _countryController = TextEditingController();
   TextEditingController _userDobController = TextEditingController();
@@ -108,6 +116,7 @@ class _NewUserDetailsState extends State<NewUserDetails> {
     _companyZipCodeController.dispose();
     _userStateController.dispose();
     _companyNAICEController.dispose();
+    _pageViewController.dispose();
     super.dispose();
   }
 
@@ -589,7 +598,6 @@ class _NewUserDetailsState extends State<NewUserDetails> {
               ],
             ),
           ),
-
         ),
         Step(
           state: _currentStep <= 1 ? StepState.editing : StepState.complete,
@@ -638,18 +646,19 @@ class _NewUserDetailsState extends State<NewUserDetails> {
                           : "NAICE Code"),
                   onTap: () {
                     scaffoldKey.currentState!.showBottomSheet(
-                            (context) => Container(
-                          color: Colors.transparent,
-                          padding:
-                          EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.3),
-                          height: MediaQuery.of(context).size.height,
-                          width: MediaQuery.of(context).size.width,
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(20),
-                                  topRight: Radius.circular(20)),
-                              child: NAICECategory()),
-                        ),
+                        (context) => Container(
+                              color: Colors.transparent,
+                              padding: EdgeInsets.only(
+                                  top:
+                                      MediaQuery.of(context).size.height * 0.3),
+                              height: MediaQuery.of(context).size.height,
+                              width: MediaQuery.of(context).size.width,
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20)),
+                                  child: NAICECategory()),
+                            ),
                         backgroundColor: Colors.black38,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.only(
@@ -663,7 +672,7 @@ class _NewUserDetailsState extends State<NewUserDetails> {
                   validator: (value) {
                     if (value == null) {
                       return "please select your business type";
-                    }else {
+                    } else {
                       return null;
                     }
                   },
@@ -784,29 +793,26 @@ class _NewUserDetailsState extends State<NewUserDetails> {
                                 width: 1),
                             borderRadius: BorderRadius.circular(8),
                           ),
-                        hintText: "Select business type"
-                          ),
+                          hintText: "Select business type"),
                       isEmpty: _currentBusinessType == '',
-                      child:  DropdownButtonHideUnderline(
+                      child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
                           value: _currentBusinessType,
                           isDense: true,
-                          onChanged: (String? groupValue){
+                          onChanged: (String? groupValue) {
                             setState(() {
                               _currentBusinessType = groupValue!;
                               state.didChange(groupValue);
                             });
                           },
-                          items: _businessType.map((String item){
-                            return DropdownMenuItem<String>(child: Text(
-                              item,
-                              style: TextStyle(
-                                  color: Colors.grey),
-                            ),
-                                value: item.toString()
-                            );
+                          items: _businessType.map((String item) {
+                            return DropdownMenuItem<String>(
+                                child: Text(
+                                  item,
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                                value: item.toString());
                           }).toList(),
-
                         ),
                       ),
                     );
@@ -827,8 +833,7 @@ class _NewUserDetailsState extends State<NewUserDetails> {
                           builder: (_) {
                             return AlertDialog(
                               shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                  BorderRadius.circular(15)),
+                                  borderRadius: BorderRadius.circular(15)),
                               backgroundColor: Colors.white,
                               content: Column(
                                 mainAxisSize: MainAxisSize.min,
@@ -843,9 +848,8 @@ class _NewUserDetailsState extends State<NewUserDetails> {
                             );
                           });
                       Provider.of<BusinessProvider>(context, listen: false)
-                          .getCityFromZip(value,context)
-                          .then((value) {
-                      });
+                          .getCityFromZip(value, context)
+                          .then((value) {});
                     }
                   },
                   decoration: InputDecoration(
@@ -881,9 +885,9 @@ class _NewUserDetailsState extends State<NewUserDetails> {
                   validator: (value) {
                     if (value == null) {
                       return "Zipcode is required";
-                    }  else if(value.length != 5){
+                    } else if (value.length != 5) {
                       return "Enter valid zipcode";
-                    }else {
+                    } else {
                       return null;
                     }
                   },
@@ -1009,17 +1013,29 @@ class _NewUserDetailsState extends State<NewUserDetails> {
                   Text("Company Zipcode: ${_companyZipCodeController.text}"),
                   Text("Company City: ${_companyCityController.text}"),
                   Text("Company State: ${_companyStateController.text}"),
-
                 ],
               ),
             ))
       ];
 
   @override
+  void initState() {
+    Provider.of<LoginProvider>(context, listen: false)
+        .getCountry()
+        .then((value) {
+      setState(() {
+        _isLoading = true;
+      });
+    });
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    //dynamic getPackageId = Preferences().getPackageId();
     final country = Provider.of<LoginProvider>(context);
     _userStateController.text = country.userstate;
-    SignUpProvider auth = Provider.of<SignUpProvider>(context);
     final selection = Provider.of<SelectionProvider>(context);
     _userCityController.text = country.cityname;
 
@@ -1091,7 +1107,9 @@ class _NewUserDetailsState extends State<NewUserDetails> {
                             type: StepperType.horizontal,
                             steps: getSteps(),
                             currentStep: _currentStep,
-                            onStepContinue: () {
+                            onStepContinue: () async{
+                              final SharedPreferences prefs = await SharedPreferences.getInstance();
+                              String packageId = prefs.getString("packageId") ?? "" ;
                               if (_currentStep < (getSteps().length - 1)) {
                                 setState(() {
                                   _currentStep += 1;
@@ -1100,49 +1118,201 @@ class _NewUserDetailsState extends State<NewUserDetails> {
                                 print('Recruiter Details:');
                                 // final form = _signUpFormKey.currentState;
                                 // form!.save();
-                                auth.register(
-                                    _displayId,
-                                    _companyEINController.text,
-                                    _userSSNController.text,
-                                    _companyNAICEController.text,
-                                    _userDobController.text,
-                                    _currentBusinessType,
-                                    _companyNameController.text,
-                                    _companyZipCodeController.text,
-                                    _companyCityController.text,
-                                    _companyStateController.text,
-                                    _userCityController.text,
-                                    _userStateController.text,
-                                    _userZipcodeController.text,
-                                    _userFullNameController.text,
-                                    _userEmailController.text,
-                                    _userPhoneNumberController.text,
-                                    _userPasswordController.text,
-                                    _userCountryCodeController.text,
-                                    _packageId,
-                                    _activateDate,
-                                    _expireDate,
-                                    _countryController.text,
-                                    _stateId,
-                                    _cityId).then((response){
-                                      if(response['status']) {
-                                        Recruiter recruiter = response['data'];
-                                        Provider.of<RecruiterProvider>(context, listen: false).setRecruiter(recruiter);
-                                      }
-                                      else{
-                                        showErrorMessage(context: context, title: "Registration Failed",
-                                            body: response.toString(), type: messageType.Error, buttonFunction: (){
 
-                                            });
-                                      }
-                                });
                                 if (selection.userSelection ==
                                     Constants.shifter) {
                                   Navigator.of(context)
                                       .pushNamed(UserCategory.Tag);
                                 } else {
-                                  Navigator.of(context)
-                                      .pushNamed(LoginActivity.Tag);
+                                  Navigator.push(context, PageTransition(
+                                      child: VerifyActivity(
+                                        displayId: _displayId,
+                                        ein: _companyEINController.text,
+                                        ssn: _userSSNController.text,
+                                        naice: _companyNAICEController
+                                            .text,
+                                        dob: _userDobController.text,
+                                        businessType:
+                                        _currentBusinessType,
+                                        companyName:
+                                        _companyNameController.text,
+                                        companyZipcode:
+                                        _companyZipCodeController
+                                            .text,
+                                        companyCity:
+                                        _companyCityController.text,
+                                        companyState:
+                                        _companyStateController
+                                            .text,
+                                        city: _userCityController.text,
+                                        state:
+                                        _userStateController.text,
+                                        zipcode:
+                                        _userZipcodeController.text,
+                                        fullName:
+                                        _userFullNameController
+                                            .text,
+                                        password:
+                                        _userPasswordController
+                                            .text,
+                                        countryCode:
+                                        _userCountryCodeController
+                                            .text,
+                                        packageId:
+                                        int.parse(packageId),
+                                        activateDate: _activateDate,
+                                        expiryDate: _expireDate,
+                                        countryId:
+                                        _countryController.text,
+                                        stateId: _stateId,
+                                        cityId: _cityId,
+                                        email: _userEmailController.text,
+                                        phone: _userPhoneNumberController.text,), type: PageTransitionType.bottomToTop));
+                                    // showDialog(
+                                    //     context: context,
+                                    //     barrierDismissible: true,
+                                    //     builder: (BuildContext context) {
+                                    //       return Center(
+                                    //         child: Container(
+                                    //           child: PlanWidget(
+                                    //               displayId: _displayId,
+                                    //               ein: _companyEINController.text,
+                                    //               ssn: _userSSNController.text,
+                                    //               naice: _companyNAICEController
+                                    //                   .text,
+                                    //               dob: _userDobController.text,
+                                    //               businessType:
+                                    //               _currentBusinessType,
+                                    //               companyName:
+                                    //               _companyNameController.text,
+                                    //               companyZipcode:
+                                    //               _companyZipCodeController
+                                    //                   .text,
+                                    //               companyCity:
+                                    //               _companyCityController.text,
+                                    //               companyState:
+                                    //               _companyStateController
+                                    //                   .text,
+                                    //               city: _userCityController.text,
+                                    //               state:
+                                    //               _userStateController.text,
+                                    //               zipcode:
+                                    //               _userZipcodeController.text,
+                                    //               fullName:
+                                    //               _userFullNameController
+                                    //                   .text,
+                                    //               email:
+                                    //               _userEmailController.text,
+                                    //               phone:
+                                    //               _userPhoneNumberController
+                                    //                   .text,
+                                    //               password:
+                                    //               _userPasswordController
+                                    //                   .text,
+                                    //               countryCode:
+                                    //               _userCountryCodeController
+                                    //                   .text,
+                                    //               packageId:
+                                    //               int.parse(packageId),
+                                    //               activateDate: _activateDate,
+                                    //               expiryDate: _expireDate,
+                                    //               countryId:
+                                    //               _countryController.text,
+                                    //               stateId: _stateId,
+                                    //               cityId: _cityId),
+                                    //         ),
+                                    //       );
+                                    //     });
+
+                                  // showGeneralDialog(
+                                  //     context: context,
+                                  //     barrierDismissible: false,
+                                  //     barrierLabel:
+                                  //         MaterialLocalizations.of(context)
+                                  //             .modalBarrierDismissLabel,
+                                  //     barrierColor: Colors.transparent,
+                                  //     transitionDuration:
+                                  //         const Duration(milliseconds: 200),
+                                  //     pageBuilder: (BuildContext buildContext,
+                                  //         Animation animation,
+                                  //         Animation secondaryAnimation) {
+                                  //       return Padding(
+                                  //         padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                  //         child: PlanWidget(),
+                                  //       );
+                                  //     });
+
+                                  //save and send to payment page
+
+                                  // Preferences().saveController(
+                                  //     _displayId,
+                                  //     _companyEINController.text,
+                                  //     _userSSNController.text,
+                                  //     _companyNAICEController.text,
+                                  //     _userDobController.text,
+                                  //     _currentBusinessType,
+                                  //     _companyNameController.text,
+                                  //     _companyZipCodeController.text,
+                                  //     _companyCityController.text,
+                                  //     _companyStateController.text,
+                                  //     _userCityController.text,
+                                  //     _userStateController.text,
+                                  //     _userZipcodeController.text,
+                                  //     _userFullNameController.text,
+                                  //     _userEmailController.text,
+                                  //     _userPhoneNumberController.text,
+                                  //     _userPasswordController.text,
+                                  //     _userCountryCodeController.text,
+                                  //     int.parse(getPackageId),
+                                  //     _activateDate,
+                                  //     _expireDate,
+                                  //     _countryController.text,
+                                  //     _stateId,
+                                  //     _cityId);
+                                  // auth
+                                  //     .register(
+                                  //         _displayId,
+                                  //         _companyEINController.text,
+                                  //         _userSSNController.text,
+                                  //         _companyNAICEController.text,
+                                  //         _userDobController.text,
+                                  //         _currentBusinessType,
+                                  //         _companyNameController.text,
+                                  //         _companyZipCodeController.text,
+                                  //         _companyCityController.text,
+                                  //         _companyStateController.text,
+                                  //         _userCityController.text,
+                                  //         _userStateController.text,
+                                  //         _userZipcodeController.text,
+                                  //         _userFullNameController.text,
+                                  //         _userEmailController.text,
+                                  //         _userPhoneNumberController.text,
+                                  //         _userPasswordController.text,
+                                  //         _userCountryCodeController.text,
+                                  //         int.parse(getPackageId),
+                                  //         _activateDate,
+                                  //         _expireDate,
+                                  //         _countryController.text,
+                                  //         _stateId,
+                                  //         _cityId)
+                                  //     .then((response) {
+                                  //   if (response['status']) {
+                                  //     Recruiter recruiter = response['data'];
+                                  //     Provider.of<RecruiterProvider>(context,
+                                  //             listen: false)
+                                  //         .setRecruiter(recruiter);
+                                  //     Navigator.of(context)
+                                  //         .pushReplacementNamed(
+                                  //             LoginActivity.Tag);
+                                  //   } else {
+                                  //     showErrorMessage(
+                                  //         context: context,
+                                  //         title: "Registration Failed",
+                                  //         body: response.toString(),
+                                  //         type: messageType.Error,
+                                  //         buttonFunction: () {});
+                                  //   }
+                                  // });
                                 }
                               }
                             },
@@ -1166,6 +1336,17 @@ class _NewUserDetailsState extends State<NewUserDetails> {
                               return Container(
                                 child: Row(
                                   children: [
+                                    if (_currentStep > 0)
+                                      Expanded(
+                                        child: ElevatedButton(
+                                          onPressed: onStepCancel,
+                                          child: const Text('Back'),
+                                        ),
+                                      ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+
                                     Expanded(
                                       child: ElevatedButton(
                                         onPressed: onStepContinue,
@@ -1173,16 +1354,6 @@ class _NewUserDetailsState extends State<NewUserDetails> {
                                             isLastStep ? 'Submit' : 'Next'),
                                       ),
                                     ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    if (_currentStep > 0)
-                                      Expanded(
-                                        child: ElevatedButton(
-                                          onPressed: onStepCancel,
-                                          child: const Text('Back'),
-                                        ),
-                                      )
                                   ],
                                 ),
                               );
@@ -1195,18 +1366,6 @@ class _NewUserDetailsState extends State<NewUserDetails> {
                 ),
               )
             : LoadingScreen());
-  }
-
-  @override
-  void initState() {
-    Provider.of<LoginProvider>(context, listen: false)
-        .getCountry()
-        .then((value) {
-      setState(() {
-        _isLoading = true;
-      });
-    });
-    super.initState();
   }
 
   void pickDate(BuildContext context) async {

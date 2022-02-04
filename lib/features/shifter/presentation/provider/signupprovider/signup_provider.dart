@@ -22,30 +22,30 @@ class SignUpProvider with ChangeNotifier {
   String url = "https://demo.shifterteam.host/v1/addRecruiter.php";
 
   Future<dynamic> register(
-      String displayId,
-      String ein,
-      String ssn,
-      String naice,
-      String dob,
-      String businessType,
-      String companyName,
-      String companyZipcode,
-      String companyState,
-      String companyCity,
-      String city,
-      String state,
-      String zipCode,
-      String name,
-      String email,
-      String phoneNumber,
-      String password,
-      String countryCode,
-      String packageId,
-      String activateDate,
-      String expireDate,
-      String countryId,
-      String stateId,
-      String cityId) async {
+      String? displayId,
+      String? ein,
+      String? ssn,
+      String? naice,
+      String? dob,
+      String? businessType,
+      String? companyName,
+      String? companyZipcode,
+      String? companyState,
+      String? companyCity,
+      String? city,
+      String? state,
+      String? zipCode,
+      String? name,
+      String? email,
+      String? phoneNumber,
+      String? password,
+      String? countryCode,
+      int? packageId,
+      String? activateDate,
+      String? expireDate,
+      String? countryId,
+      String? stateId,
+      String? cityId) async {
     final Map<String, dynamic> registrationData = {
       "display_id": displayId,
       "ein": ein,
@@ -93,7 +93,7 @@ class SignUpProvider with ChangeNotifier {
 
       Recruiter authRecruiter = Recruiter.fromJson(userData);
 
-      RecruiterPreferences().saveRecruiter(authRecruiter);
+      Preferences().saveRecruiter(authRecruiter);
       result = {
         'status': true,
         'message': 'Successfully registered',
@@ -115,4 +115,6 @@ class SignUpProvider with ChangeNotifier {
     print("the error is $error.detail");
     return {'status': false, 'message': 'Unsuccessful Request', 'data': error};
   }
+
+
 }

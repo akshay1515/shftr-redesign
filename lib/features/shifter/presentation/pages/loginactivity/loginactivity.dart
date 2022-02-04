@@ -5,14 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
-import 'package:shifter/features/shifter/presentation/pages/loginactivity/otpactivity.dart';
 import 'package:shifter/features/shifter/presentation/provider/loginprovider/login_activity_provider.dart';
 import 'package:shifter/features/shifter/presentation/provider/selectionprovider/selection_activity_provider.dart';
 import 'package:shifter/features/shifter/presentation/widgets/bottom_navigation.dart';
 import 'package:shifter/features/shifter/presentation/widgets/countrybottomsheet.dart';
 import 'package:shifter/features/shifter/presentation/widgets/loadingscreen.dart';
-import 'package:shifter/features/shifter/presentation/widgets/loginwidget/countrylist.dart';
-import 'package:shifter/features/shifter/presentation/widgets/show-error-dialog.dart';
 import 'package:shifter/utils/colorconstant.dart';
 
 class LoginActivity extends StatefulWidget {
@@ -159,7 +156,7 @@ class _LoginActivityState extends State<LoginActivity> {
     });
   }
 
-  otpScreen() {
+   otpScreen() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: SingleChildScrollView(
