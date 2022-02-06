@@ -12,6 +12,7 @@ class Recruiter {
   Recruiter({
      this.id,
      this.displayId,
+    this.ssn,
      this.fcmToken,
      this.ein,
     this.naice,
@@ -28,7 +29,6 @@ class Recruiter {
      this.companyLogo,
     this.companyCity,
     this.companyState,
-    this.ssn,
      this.city,
      this.state,
      this.zipCode,

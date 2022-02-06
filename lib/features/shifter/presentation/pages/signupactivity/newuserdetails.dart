@@ -1109,7 +1109,7 @@ class _NewUserDetailsState extends State<NewUserDetails> {
                             currentStep: _currentStep,
                             onStepContinue: () async{
                               final SharedPreferences prefs = await SharedPreferences.getInstance();
-                              String packageId = prefs.getString("packageId") ?? "" ;
+                              String packageId = prefs.getString("packageId") ?? "0" ;
                               if (_currentStep < (getSteps().length - 1)) {
                                 setState(() {
                                   _currentStep += 1;

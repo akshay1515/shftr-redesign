@@ -32,7 +32,7 @@ final List<String> imgList = [
 
   "https://shifterteam.host/shifterwebportal/assets/img/banner/1216202112260101_Shftr.banner_png_20211225_200909_0000.png",
   "https://shifterteam.host/shifterwebportal/assets/img/banner/2230202112260101_Assemble Your Team_png_20211225_202130_0000.png",
-  "https://shifterteam.host/shifterwebportal/assets/img/banner/3215202103120719_Time_File_000_(1).png"
+  "https://shifterteam.host/shifterwebportal/assets/img/banner/1216202112260101_Shftr.banner_png_20211225_200909_0000.png",
 ];
 
 class _UserHomePageState extends State<UserHomePage> {
@@ -65,6 +65,7 @@ class _UserHomePageState extends State<UserHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    Recruiter recruiter = Provider.of<RecruiterProvider>(context).recruiter;
     final List<Widget> imageSliders = imgList
         .map((item) => Container(
       child: Container(
@@ -143,7 +144,7 @@ class _UserHomePageState extends State<UserHomePage> {
                                       ),
                                       _isLoading
                                           ? Text(
-                                              "Lilac Inc",
+                                              "${recruiter.name}",
                                               style: TextStyle(
                                                   fontSize: 26,
                                                   fontFamily: "Poppins",
@@ -190,7 +191,7 @@ class _UserHomePageState extends State<UserHomePage> {
                                 child: Row(
                                   children: [
                                     Text(
-                                      "rochester ny",
+                                      "${recruiter.city} ${recruiter.state}",
                                       style: TextStyle(
                                           fontSize: 15,
                                           fontFamily: "Poppins",

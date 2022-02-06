@@ -108,6 +108,7 @@ class _PlanWidgetState extends State<PlanWidget> {
   // bool useGlassMorphism = false;
   //bool useBackgroundImage = false;
   OutlineInputBorder? border;
+  OutlineInputBorder? borderActive;
 
   @override
   void dispose() {
@@ -121,8 +122,15 @@ class _PlanWidgetState extends State<PlanWidget> {
     super.initState();
     border = OutlineInputBorder(
       borderSide: BorderSide(
-        color: Colors.grey.withOpacity(0.7),
-        width: 2.0,
+        color: Colors.grey.shade700,
+        width: 1.0,
+      ),
+    );
+
+    borderActive = OutlineInputBorder(
+      borderSide: BorderSide(
+        color: ColorConstant.primary,
+        width: 1.0,
       ),
     );
 
@@ -400,6 +408,7 @@ class _PlanWidgetState extends State<PlanWidget> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        title: Text("Make Payment", style: TextStyle(color: Colors.black, fontFamily: 'Poppins'),),
         leading: GestureDetector(
           onTap: () {
             Navigator.of(context).pop();
@@ -408,17 +417,19 @@ class _PlanWidgetState extends State<PlanWidget> {
               backgroundColor: Colors.transparent,
               child: Icon(
                 Icons.arrow_back,
-                color: Colors.white,
+                color: Colors.black,
               )),
         ),
       ),
       extendBodyBehindAppBar: true,
       body: Container(
         decoration: BoxDecoration(
-            image: const DecorationImage(
-              image: ExactAssetImage('assets/images/img_home_back.png'),
-              fit: BoxFit.cover,
-            )),
+            // image: const DecorationImage(
+            //   image: ExactAssetImage('assets/images/img_home_back.png'),
+            //   fit: BoxFit.cover,
+            // ),
+          color: Colors.white
+        ),
         child: SafeArea(
           child: Column(
             children: <Widget>[
@@ -467,38 +478,38 @@ class _PlanWidgetState extends State<PlanWidget> {
                         cardHolderName: cardHolderName,
                         expiryDate: expiryDate,
                         themeColor: Colors.blue,
-                        textColor: Colors.white,
+                        textColor: Colors.black,
                         cardNumberDecoration: InputDecoration(
                           labelText: 'Number',
                           hintText: 'XXXX XXXX XXXX XXXX',
-                          hintStyle: const TextStyle(color: Colors.white),
+                          hintStyle: const TextStyle(color: Colors.grey),
                           labelStyle:
-                          const TextStyle(color: Colors.white),
-                          focusedBorder: border,
+                          const TextStyle(color:  Colors.grey),
+                          focusedBorder: borderActive,
                           enabledBorder: border,
                         ),
                         expiryDateDecoration: InputDecoration(
-                          hintStyle: const TextStyle(color: Colors.white),
+                          hintStyle: const TextStyle(color: Colors.grey),
                           labelStyle:
-                          const TextStyle(color: Colors.white),
-                          focusedBorder: border,
+                          const TextStyle(color:  Colors.grey),
+                          focusedBorder: borderActive,
                           enabledBorder: border,
-                          labelText: 'Expired Date',
+                          labelText: 'Valid Till',
                           hintText: 'XX/XX',
                         ),
                         cvvCodeDecoration: InputDecoration(
-                          hintStyle: const TextStyle(color: Colors.white),
+                          hintStyle: const TextStyle(color: Colors.grey),
                           labelStyle:
-                          const TextStyle(color: Colors.white),
+                          const TextStyle(color:  Colors.grey),
                           focusedBorder: border,
                           enabledBorder: border,
                           labelText: 'CVV',
                           hintText: 'XXX',
                         ),
                         cardHolderDecoration: InputDecoration(
-                          hintStyle: const TextStyle(color: Colors.white),
+                          hintStyle: const TextStyle(color: Colors.grey),
                           labelStyle:
-                          const TextStyle(color: Colors.white),
+                          const TextStyle(color: Colors.grey),
                           focusedBorder: border,
                           enabledBorder: border,
                           labelText: 'Card Holder',
@@ -525,17 +536,26 @@ class _PlanWidgetState extends State<PlanWidget> {
                           ),
                           child: Container(
                             margin: const EdgeInsets.all(12),
-                            child: const Text(
-                              'Confirm',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'halter',
-                                fontSize: 14,
-                                package: 'flutter_credit_card',
-                              ),
-                            ),
+                            child: Stack(
+                              children: [
+                                Visibility(
+                                  child: const Text(
+                                    'Confirm',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'halter',
+                                      fontSize: 14,
+                                      package: 'flutter_credit_card',
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )
                           ),
                           onPressed: () {
+                            setState(() {
+                              isLoading = true;
+                            });
                             if (formKey.currentState!.validate()) {
                               print('valid!');
                               print(widget.ssn);

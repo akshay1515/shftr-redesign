@@ -187,7 +187,7 @@ class _OTPActivityState extends State<OTPActivity> {
                     child: ElevatedButton(
                       onPressed: () async{
                         final SharedPreferences prefs = await SharedPreferences.getInstance();
-                        String packageId = prefs.getString("packageId") ?? "" ;
+                        String packageId = prefs.getString("packageId") ?? "0" ;
                         showDialog(
                             context: context,
                             barrierDismissible: true,

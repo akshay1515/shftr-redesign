@@ -57,12 +57,12 @@ class Preferences {
     prefs.setString("packageId", packageId);
     return prefs.commit();
   }
-
-   getPackageId() async{
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String packageId = prefs.getString("packageId") ?? "" ;
-    return packageId;
-  }
+  //
+  //  getPackageId() async{
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String packageId = prefs.getString("packageId") ?? "" ;
+  //   return packageId;
+  // }
 
   Future<bool> saveController( String displayId,
       String ein,
