@@ -1,17 +1,22 @@
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shifter/features/shifter/presentation/models/recruiter/recruiter.dart';
 import 'package:shifter/features/shifter/presentation/pages/candidateactivity/candidate_page.dart';
 import 'package:shifter/features/shifter/presentation/pages/homepage/userhomepage.dart';
 import 'package:shifter/features/shifter/presentation/pages/interviewactivity/interview_page.dart';
 import 'package:shifter/features/shifter/presentation/pages/jobactivity/job_page.dart';
 import 'package:shifter/features/shifter/presentation/pages/profileactivity/profile_page.dart';
+import 'package:shifter/features/shifter/presentation/provider/recruiterprovider/recruiter_provider.dart';
+import 'package:shifter/features/shifter/presentation/provider/signupprovider/signup_provider.dart';
 
 
 class NavScreen extends StatefulWidget {
   static const String Tag = "-/navscreen";
-  const NavScreen({ Key? key,  this.title,  this.id}): super(key: key);
+  const NavScreen({ Key? key,  this.recruiter, this.title, this.catId, this.categoryName, this.id}): super(key: key);
   //update the constructor to include the uid
-  final String? id, title; //include this
+  final String? id, title, catId, categoryName; //include this
+  final Recruiter? recruiter;
 
   @override
   _NavScreenState createState() => _NavScreenState();
@@ -30,6 +35,9 @@ class _NavScreenState extends State<NavScreen> {
   @override
   Widget build(BuildContext context) {
 
+   // Provider.of<RecruiterProvider>(context).setRecruiter(widget.recruiter!);
+   //  Recruiter recruiter = Provider.of<RecruiterProvider>(context).recruiter;
+    Provider.of<RecruiterProvider>(context).setRecruiter( widget.recruiter);
     return Scaffold(
       body: Stack(
         children: _screens.asMap().map(

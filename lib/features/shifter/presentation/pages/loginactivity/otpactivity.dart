@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -31,7 +32,9 @@ class OTPActivity extends StatefulWidget {
       expiryDate,
       countryId,
       stateId,
-      cityId;
+      cityId,
+  OTP,
+      verificationId;
   final int? packageId;
 
 
@@ -58,7 +61,10 @@ class OTPActivity extends StatefulWidget {
      this.countryId,
      this.stateId,
      this.cityId,
-     this.packageId }) : super(key: key);
+     this.packageId,
+    this.verificationId,
+    this.OTP,
+  }) : super(key: key);
 
   @override
   State<OTPActivity> createState() => _OTPActivityState();
@@ -66,7 +72,62 @@ class OTPActivity extends StatefulWidget {
 
 class _OTPActivityState extends State<OTPActivity> {
   TextEditingController OTPController = TextEditingController();
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  bool isLoading = false;
+  String? fcmToken;
 
+  void signInWithPhoneNumber() async {
+    bool error=false;
+    User? user;
+    AuthCredential credential;
+    // setState(() {
+    //   clickedSendOTP=true;
+    // });
+    try {
+      credential = PhoneAuthProvider.credential(
+        verificationId: widget.verificationId!,
+        smsCode: OTPController.text,
+      );
+      user = (await firebaseAuth.signInWithCredential(credential)).user!;
+    } catch (e) {
+      showMessage("Failed to sign in: $e" );
+      error=true;
+    }
+    if(!error&&user!=null && user.uid!=null){
+      fcmToken = user.uid;
+      print("User ID: $fcmToken");
+      //here you can store user data in backend
+      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>NavScreen(
+      //   //
+      // )));
+    }
+    // setState(() {
+    //   clickedSendOTP=false;
+    // });
+  }
+
+  void showMessage(String errorMessage) {
+    showDialog(
+        context: context,
+        builder: (BuildContext builderContext) {
+          return AlertDialog(
+            title: Text("Error"),
+            content: Text(errorMessage),
+            actions: [
+              TextButton(
+                child: Text("Ok"),
+                onPressed: () async {
+                  Navigator.of(builderContext).pop();
+                },
+              )
+            ],
+          );
+        }).then((value) {
+      setState(() {
+        isLoading = false;
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -186,43 +247,45 @@ class _OTPActivityState extends State<OTPActivity> {
                     margin: EdgeInsets.symmetric(horizontal: 25),
                     child: ElevatedButton(
                       onPressed: () async{
+                        signInWithPhoneNumber();
                         final SharedPreferences prefs = await SharedPreferences.getInstance();
                         String packageId = prefs.getString("packageId") ?? "0" ;
-                        showDialog(
-                            context: context,
-                            barrierDismissible: true,
-                            builder: (BuildContext context) {
-                              return Center(
-                                child: Container(
-                                  child: PlanWidget(
-                                      displayId: "0",
-                                      ein: widget.ein,
-                                      ssn: widget.ssn,
-                                      naice: widget.naice,
-                                      dob: widget.dob,
-                                      businessType:widget.businessType,
-                                      companyName:widget.companyName,
-                                      companyZipcode:widget.companyZipcode,
-                                      companyCity:widget.companyCity,
-                                      companyState:widget.companyState,
-                                      city: widget.city,
-                                      state:widget.state,
-                                      zipcode:widget.zipcode,
-                                      fullName:widget.fullName,
-                                      email:widget.email,
-                                      phone:widget.phone,
-                                      password:widget.password,
-                                      countryCode:widget.countryCode,
-                                      packageId:
-                                      int.parse(packageId),
-                                      activateDate: widget.activateDate,
-                                      expiryDate: widget.expiryDate,
-                                      countryId:widget.countryId,
-                                      stateId: widget.stateId,
-                                      cityId: widget.cityId),
-                                ),
-                              );
-                            });
+                        // showDialog(
+                        //     context: context,
+                        //     barrierDismissible: true,
+                        //     builder: (BuildContext context) {
+                        //       return Center(
+                        //         child: Container(
+                        //           child: PlanWidget(
+                        //               displayId: "0",
+                        //               ein: widget.ein,
+                        //               ssn: widget.ssn,
+                        //               fcmToken: fcmToken,
+                        //               naice: widget.naice,
+                        //               dob: widget.dob,
+                        //               businessType:widget.businessType,
+                        //               companyName:widget.companyName,
+                        //               companyZipcode:widget.companyZipcode,
+                        //               companyCity:widget.companyCity,
+                        //               companyState:widget.companyState,
+                        //               city: widget.city,
+                        //               state:widget.state,
+                        //               zipcode:widget.zipcode,
+                        //               fullName:widget.fullName,
+                        //               email:widget.email,
+                        //               phone:widget.phone,
+                        //               password:widget.password,
+                        //               countryCode:widget.countryCode,
+                        //               packageId:
+                        //               int.parse(packageId),
+                        //               activateDate: widget.activateDate,
+                        //               expiryDate: widget.expiryDate,
+                        //               countryId:widget.countryId,
+                        //               stateId: widget.stateId,
+                        //               cityId: widget.cityId),
+                        //         ),
+                        //       );
+                        //     });
                         //Navigator.of(context).pop();
                         //Navigator.of(context).pushNamed(NavScreen.Tag, arguments: {"id" : "2" });
                         //Navigator.of(context).pushNamed(NewUserDetails.Tag,arguments: {"mobile" : OTPController.text});

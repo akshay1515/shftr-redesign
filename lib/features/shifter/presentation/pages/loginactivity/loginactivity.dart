@@ -5,11 +5,15 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
+import 'package:shifter/features/shifter/presentation/models/recruiter/recruiter.dart';
 import 'package:shifter/features/shifter/presentation/provider/loginprovider/login_activity_provider.dart';
+import 'package:shifter/features/shifter/presentation/provider/recruiterprovider/recruiter_provider.dart';
 import 'package:shifter/features/shifter/presentation/provider/selectionprovider/selection_activity_provider.dart';
+import 'package:shifter/features/shifter/presentation/provider/signupprovider/signup_provider.dart';
 import 'package:shifter/features/shifter/presentation/widgets/bottom_navigation.dart';
 import 'package:shifter/features/shifter/presentation/widgets/countrybottomsheet.dart';
 import 'package:shifter/features/shifter/presentation/widgets/loadingscreen.dart';
+import 'package:shifter/features/shifter/presentation/widgets/show-error-dialog.dart';
 import 'package:shifter/utils/colorconstant.dart';
 
 class LoginActivity extends StatefulWidget {
@@ -23,6 +27,7 @@ class LoginActivity extends StatefulWidget {
 
 class _LoginActivityState extends State<LoginActivity> {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
   GlobalKey<FormFieldState> _formKey = GlobalKey<FormFieldState>();
   bool isLoading = false;
   String? _verificationId;
@@ -31,8 +36,9 @@ class _LoginActivityState extends State<LoginActivity> {
   TextEditingController _countryController = TextEditingController();
   TextEditingController _mobileController = TextEditingController();
   TextEditingController OTPController = TextEditingController();
+  User? user;
 
-  FocusNode _countryfocus = FocusNode();
+  FocusNode _countryFocus = FocusNode();
   FocusNode _loginFocus = FocusNode();
 
   bool clickedSendOTP = false;
@@ -46,6 +52,7 @@ class _LoginActivityState extends State<LoginActivity> {
         isLoading = true;
       });
     });
+
   }
 
   void verifyPhoneNumber()async{
@@ -56,7 +63,6 @@ class _LoginActivityState extends State<LoginActivity> {
       });
       PhoneVerificationCompleted verificationCompleted = (PhoneAuthCredential phoneAuthCredential) async {
 
-        User? user;
         bool error=false;
         try{
           user=(await firebaseAuth.signInWithCredential(phoneAuthCredential)).user!;
@@ -65,7 +71,7 @@ class _LoginActivityState extends State<LoginActivity> {
           error=true;
         }
         if(!error&&user!=null){
-          String id=user.uid;
+          String id=user!.uid;
           //here you can store user data in backend
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>NavScreen(
             //
@@ -106,7 +112,7 @@ class _LoginActivityState extends State<LoginActivity> {
   }
   void signInWithPhoneNumber() async {
     bool error=false;
-    User? user;
+
     AuthCredential credential;
     setState(() {
       clickedSendOTP=true;
@@ -121,11 +127,13 @@ class _LoginActivityState extends State<LoginActivity> {
       showMessage("Failed to sign in: " );
       error=true;
     }
-    if(!error&&user!=null&&user.uid!=null){
-      String id=user.uid;
+    if(!error&&user!=null&&user!.uid!= null){
+      String id=user!.uid;
+
       //here you can store user data in backend
+    // Provider.of<RecruiterProvider>(context, listen: false).setRecruiter(recruiter);
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>NavScreen(
-        //
+
       )));
     }
     setState(() {
@@ -371,6 +379,7 @@ class _LoginActivityState extends State<LoginActivity> {
     final size = MediaQuery.of(context).size;
 
     final userRole = Provider.of<SelectionProvider>(context);
+    SignUpProvider auth = Provider.of<SignUpProvider>(context);
     if (isLoading) {
       _countryController.text =
           "${Provider.of<LoginProvider>(context, listen: false).selectedCountry!.cCode}";
@@ -445,14 +454,14 @@ class _LoginActivityState extends State<LoginActivity> {
                                           readOnly: true,
                                           autofocus: false,
                                           controller: _countryController,
-                                          focusNode: _countryfocus,
+                                          focusNode: _countryFocus,
                                           keyboardType: TextInputType.phone,
                                           decoration: InputDecoration(
                                             isDense: true,
                                             contentPadding: EdgeInsets.only(
                                                 left: 8, right: 8),
                                             labelStyle: TextStyle(
-                                                color: _countryfocus.hasFocus
+                                                color: _countryFocus.hasFocus
                                                     ? Colors.grey
                                                     : Colors.grey),
                                             border: OutlineInputBorder(
@@ -494,7 +503,7 @@ class _LoginActivityState extends State<LoginActivity> {
                                                 _loginFocus.unfocus();
                                               }
                                               FocusScope.of(context)
-                                                  .requestFocus(_countryfocus);
+                                                  .requestFocus(_countryFocus);
                                             });
                                           },
                                         ),

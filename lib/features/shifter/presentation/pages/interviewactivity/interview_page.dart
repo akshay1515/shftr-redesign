@@ -33,7 +33,7 @@ class _InterviewPageState extends State<InterviewPage> {
                     ),
                   ),
                   Text(
-                    "Candidates Interviews for the job",
+                    "Available Interviews for the job",
                     style: TextStyle(
                         color: Colors.black54,
                         fontSize: FontConstant.Tagline_text,
@@ -85,9 +85,8 @@ class _InterviewPageState extends State<InterviewPage> {
                                                   BorderRadius.circular(8.0),
                                               image: DecorationImage(
                                                 fit: BoxFit.cover,
-                                                image: NetworkImage(
-                                                  'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cGVyc29ufGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60',
-                                                ),
+                                                image:  AssetImage(
+                                                    "assets/images/logo.png"),
                                               ),
                                             ),
                                           ),
@@ -101,9 +100,9 @@ class _InterviewPageState extends State<InterviewPage> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                "Candidate Name",
+                                                "Rodman Test-account",
                                                 style: TextStyle(
-                                                    fontSize: 18,
+                                                    fontSize: 16,
                                                     fontWeight: FontWeight.bold,
                                                     fontFamily: 'Poppins'),
                                               ),
@@ -118,7 +117,7 @@ class _InterviewPageState extends State<InterviewPage> {
                                                 ),
                                                 child: Center(
                                                   child: Text(
-                                                    "STATUS",
+                                                    "PENDING",
                                                     style: TextStyle(
                                                         color: Colors.white,
                                                         fontSize: 12.0,
@@ -154,7 +153,7 @@ class _InterviewPageState extends State<InterviewPage> {
                                                     fontFamily: 'Poppins'),
                                               ),
                                               Text(
-                                                "Driver",
+                                                "Dog Walker",
                                                 style: TextStyle(
                                                     fontSize: 14,
                                                     color: Colors.black,
@@ -258,173 +257,7 @@ class _InterviewPageState extends State<InterviewPage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 10.0,),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 12.0),
-                        child: GestureDetector(
-                          onTap: () {},
-                          child: PhysicalModel(
-                            borderRadius: BorderRadius.circular(8.0),
-                            color: Colors.white,
-                            elevation: 2,
-                            shadowColor: Colors.grey,
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: 250,
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12.0, vertical: 10.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                          const EdgeInsets.only(top: 5.0),
-                                          child: Container(
-                                            height: 60,
-                                            width: 60,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                              BorderRadius.circular(8.0),
-                                              image: DecorationImage(
-                                                fit: BoxFit.cover,
-                                                image: NetworkImage(
-                                                  'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cGVyc29ufGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60',
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Container(
-                                          width: 225,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Candidate Name",
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontFamily: 'Poppins'),
-                                              ),
-                                              Container(
-                                                height: 30,
-                                                width: 90,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.green.shade900,
-                                                  borderRadius:
-                                                  BorderRadius.circular(
-                                                      8.0),
-                                                ),
-                                                child: Center(
-                                                  child: Text(
-                                                    "COMPLETED",
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 12.0,
-                                                      fontWeight: FontWeight.bold
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 10.0,
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 10.0, right: 10.0),
-                                                child: Container(
-                                                  width: MediaQuery.of(context)
-                                                      .size
-                                                      .width,
-                                                  height: 1, // Thickness
-                                                  color: Colors.grey
-                                                      .withOpacity(0.2),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 10.0,
-                                              ),
-                                              Text(
-                                                "Job & Job Details",
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontFamily: 'Poppins'),
-                                              ),
-                                              Text(
-                                                "Driver",
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.w700,
-                                                    fontFamily: 'Poppins'),
-                                              ),
-                                              Text(
-                                                "Lorem ipsum dolor sit amet,consectetur adipiscing elit,consectetur adipiscing",
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                    fontSize: 10,
-                                                    color: Colors.black54,
-                                                    fontFamily: 'Poppins'),
-                                              ),
-                                              SizedBox(
-                                                height: 10.0,
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 10.0, right: 10.0),
-                                                child: Container(
-                                                  width: MediaQuery.of(context)
-                                                      .size
-                                                      .width,
-                                                  height: 1, // Thickness
-                                                  color: Colors.grey
-                                                      .withOpacity(0.2),
-                                                ),
-                                              ),
-                                              Text(
-                                                "Interview Details",
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontFamily: 'Poppins'),
-                                              ),
-                                              Text(
-                                                "21/1/2022, 4:20PM",
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.w700,
-                                                    fontFamily: 'Poppins'),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
 
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 ],

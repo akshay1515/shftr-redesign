@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shifter/features/shifter/presentation/pages/homepage/userhomepage.dart';
 import 'package:shifter/features/shifter/presentation/pages/locationactivity/location_activity.dart';
 import 'package:shifter/features/shifter/presentation/pages/loginactivity/loginactivity.dart';
 import 'package:shifter/features/shifter/presentation/pages/profileactivity/updateProfileActivity/update_personal_activity.dart';
@@ -42,8 +41,8 @@ class RouteGenerator {
       //   }
       case NAICECategory.Tag:
         return MaterialPageRoute(builder: (_) => NAICECategory());
-      case NavScreen.Tag:
-        return MaterialPageRoute(builder: (_) => NavScreen());
+      // case NavScreen.Tag:
+      //   return MaterialPageRoute(builder: (_) => NavScreen());
       case UpdatePersonalActivity.Tag:
         return MaterialPageRoute(builder: (_) => UpdatePersonalActivity());
       case RegisterBusiness.Tag:
@@ -52,8 +51,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => UserCategory());
       case UserSkillSelect.Tag:
         return MaterialPageRoute(builder: (_)=>UserSkillSelect());
-      case UserHomePage.Tag:
-        return MaterialPageRoute(builder:(_)=>UserHomePage());
+      // case UserHomePage.Tag:
+      //   return MaterialPageRoute(builder:(_)=>UserHomePage());
       case WalletPage.Tag:
         return MaterialPageRoute(builder: (_) => WalletPage());
       case LocationActivity.Tag:

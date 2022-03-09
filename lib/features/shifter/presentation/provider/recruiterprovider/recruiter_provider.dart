@@ -7,11 +7,11 @@ import 'package:shifter/features/shifter/presentation/models/recruiter/recruiter
 
 
 class RecruiterProvider with ChangeNotifier {
-  Recruiter _recruiter = new Recruiter();
+  Recruiter? _recruiter = new Recruiter();
 
-  Recruiter get recruiter => _recruiter;
+  Recruiter? get recruiter => _recruiter;
 
-  void setRecruiter(Recruiter recruiter) {
+  void setRecruiter(Recruiter? recruiter) {
     _recruiter = recruiter;
     notifyListeners();
   }

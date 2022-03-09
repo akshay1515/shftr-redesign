@@ -41,7 +41,9 @@ dependencies:
   page_transition:
   shared_preferences:
   flutter_credit_card:
+  shimmer:
   font_awesome_flutter:
+  webview_flutter:
 
 
 

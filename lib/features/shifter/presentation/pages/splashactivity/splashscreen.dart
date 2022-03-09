@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:shifter/features/shifter/presentation/models/recruiter/recruiter.dart';
 import 'package:shifter/utils/consants.dart';
 import 'package:shifter/features/shifter/presentation/pages/selectionactivity/selectionscreen.dart';
 import 'package:shifter/utils/fontconstant.dart';
+import 'package:shifter/utils/preferences/recruiter_preferences.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
 
     Future.delayed(Duration(seconds: 3),(){
       Navigator.of(context).pushReplacementNamed(SelectionScreen.Tag);

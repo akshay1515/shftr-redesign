@@ -9,22 +9,72 @@ import 'package:shifter/features/shifter/presentation/models/recruiter/recruiter
 import 'package:shifter/utils/preferences/recruiter_preferences.dart';
 
 enum Status {
+  NotLoggedIn,
   NotRegistered,
+  LoggedIn,
   Registered,
   Authenticating,
   Registering,
+  LoggedOut
 }
 
 class SignUpProvider with ChangeNotifier {
   Status _registeredInStatus = Status.NotRegistered;
-
   Status get registeredInStatus => _registeredInStatus;
-  String url = "https://demo.shifterteam.host/v1/addRecruiter.php";
+  String urlRegister = "https://demo.shifterteam.host/v1/addRecruiter.php";
+  String urlLogin = "https://demo.shifterteam.host/v1/getRecruiter.php";
+
+  Status _loggedInStatus = Status.NotLoggedIn;
+  Status get loggedInStatus => _loggedInStatus;
+
+
+  Future<Map<String,dynamic>> login(String id) async{
+    var result;
+    final Map<String, dynamic> loginData = {
+      "id": id,
+    };
+
+    _loggedInStatus = Status.Authenticating;
+    notifyListeners();
+
+    Response response = await post(
+     Uri.parse(urlLogin),
+      body: json.encode(loginData),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if(response.statusCode == 200){
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      var userData = responseData['recruiter'];
+
+      Recruiter authRecruiter = Recruiter.fromJson(userData);
+
+      Preferences().saveRecruiter(authRecruiter);
+
+      _loggedInStatus = Status.LoggedIn;
+      notifyListeners();
+
+      result = {
+        'status': true,
+        'message': 'Successful',
+        'user': authRecruiter
+      };
+    }else{
+      _loggedInStatus = Status.NotLoggedIn;
+      notifyListeners();
+      result = {
+        'status': false,
+        'message': json.decode(response.body)['error']
+      };
+    }
+    return result;
+  }
 
   Future<dynamic> register(
       String? displayId,
       String? ein,
       String? ssn,
+      String? fcmToken,
       String? naice,
       String? dob,
       String? businessType,
@@ -48,11 +98,12 @@ class SignUpProvider with ChangeNotifier {
       String? cityId) async {
     final Map<String, dynamic> registrationData = {
       "display_id": displayId,
+      "fcm_token": fcmToken,
       "ein": ein,
       "ssn": ssn,
       "naice": naice,
       "dob": dob,
-      "busines_type": businessType,
+      "business_type": businessType,
       "company_name": companyName,
       "company_zipcode": companyZipcode,
       "company_city": companyCity,
@@ -76,7 +127,7 @@ class SignUpProvider with ChangeNotifier {
     _registeredInStatus = Status.Registering;
     notifyListeners();
 
-    return await post(Uri.parse(url),
+    return await post(Uri.parse(urlRegister),
             body: json.encode(registrationData),
             headers: {'Content-Type': 'application/json'})
         .then(onValue)

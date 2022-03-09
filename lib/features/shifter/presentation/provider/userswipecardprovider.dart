@@ -47,11 +47,11 @@ class UserSwipeCardProvider with ChangeNotifier {
 
     if (status != null) {
       if (status == Jobstatus.accepted) {
-        Fluttertoast.showToast(msg: "You accepted this job");
+        Fluttertoast.showToast(msg: "You accepted this candidate");
       } else if (status == Jobstatus.rejected) {
-        Fluttertoast.showToast(msg: "You rejected this job");
+        Fluttertoast.showToast(msg: "You rejected this candidate");
       } else {
-        Fluttertoast.showToast(msg: "You saved this job");
+        Fluttertoast.showToast(msg: "You saved this candidate");
       }
     }
 

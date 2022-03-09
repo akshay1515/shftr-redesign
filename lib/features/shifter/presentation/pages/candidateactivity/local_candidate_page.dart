@@ -1,25 +1,58 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shifter/features/shifter/presentation/models/recruiter/jobs.dart';
 import 'package:shifter/features/shifter/presentation/pages/locationactivity/location_activity.dart';
-import 'package:shifter/features/shifter/presentation/widgets/customchips.dart';
+import 'package:shifter/features/shifter/presentation/services/recruiter/job_service.dart';
+
 import 'package:shifter/utils/colorconstant.dart';
 import 'package:shifter/utils/consants.dart';
 import 'package:shifter/utils/fontconstant.dart';
+import 'package:shimmer/shimmer.dart';
 
 class LocalCandidatePage extends StatefulWidget {
-  const LocalCandidatePage({Key? key}) : super(key: key);
+  final String? recruiterId,
+      candidateFirstName,
+      candidateLastName,
+      candidateJobTitle,
+      candidateState,
+      candidateCity,
+      candidateExperience,
+      candidateSSN,
+      candidateQualification,
+      candidateProfileImage,
+      candidateAbout;
+
+  const LocalCandidatePage(
+      {Key? key,
+      this.recruiterId,
+      this.candidateFirstName,
+      this.candidateLastName,
+      this.candidateJobTitle,
+      this.candidateState,
+      this.candidateCity,
+      this.candidateExperience,
+      this.candidateProfileImage,
+      this.candidateAbout,
+      this.candidateSSN,
+      this.candidateQualification})
+      : super(key: key);
 
   @override
   _LocalCandidatePageState createState() => _LocalCandidatePageState();
 }
 
 class _LocalCandidatePageState extends State<LocalCandidatePage> {
-   String _site = "";
+  bool showAssignButton = false;
+  late Future<List<Job>> futureJobs;
+  ScrollController listScrollController = ScrollController();
+  var selectedValue;
+
   @override
   void initState() {
-    // TODO: implement initState
+    futureJobs = JobService.getJob(widget.recruiterId ?? "2");
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,11 +91,12 @@ class _LocalCandidatePageState extends State<LocalCandidatePage> {
                           borderRadius: BorderRadius.circular(8.0),
                           image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: AssetImage(
-                                        "assets/images/logo.png"),
-                            // image: NetworkImage(
-                            //   'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cGVyc29ufGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60',
-                            // ),
+                            image: widget.candidateProfileImage != null &&
+                                    widget.candidateProfileImage != ""
+                                ? NetworkImage(
+                                    '${widget.candidateProfileImage}')
+                                : AssetImage("assets/images/logo.png")
+                                    as ImageProvider,
                           ),
                         ),
                       ),
@@ -72,7 +106,7 @@ class _LocalCandidatePageState extends State<LocalCandidatePage> {
                     ),
                     Center(
                       child: Text(
-                        "Ben Trem",
+                        "${widget.candidateFirstName} ${widget.candidateLastName}",
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -82,7 +116,7 @@ class _LocalCandidatePageState extends State<LocalCandidatePage> {
                     ),
                     Center(
                       child: Text(
-                        "Freelancer",
+                        "${widget.candidateJobTitle}",
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.normal,
@@ -102,7 +136,7 @@ class _LocalCandidatePageState extends State<LocalCandidatePage> {
                             size: 18.0,
                           ),
                           Text(
-                            "Rochester, NY",
+                            "${widget.candidateCity}, ${widget.candidateState}",
                             style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w400,
@@ -132,7 +166,7 @@ class _LocalCandidatePageState extends State<LocalCandidatePage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                "Entry Level",
+                                "${widget.candidateExperience}",
                                 style: TextStyle(
                                     fontSize: 18,
                                     color: Colors.black,
@@ -149,14 +183,12 @@ class _LocalCandidatePageState extends State<LocalCandidatePage> {
                               ),
                             ],
                           ),
-                          SizedBox(
-                            width: 60,
-                          ),
+                          Spacer(),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                "12th",
+                                "${widget.candidateQualification}",
                                 style: TextStyle(
                                     fontSize: 18,
                                     color: Colors.black,
@@ -466,7 +498,6 @@ class _LocalCandidatePageState extends State<LocalCandidatePage> {
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: 300.0,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: Column(
@@ -492,7 +523,7 @@ class _LocalCandidatePageState extends State<LocalCandidatePage> {
                             fontSize: FontConstant.Mini_Tagline_text),
                       ),
                       Text(
-                        "about me about me about me about me about meabout me about me about me about me about meabout me about me about me about me about meabout me about me about me about me about meabout me about me about me about me about meabout me about me about about me about me",
+                        "${widget.candidateAbout}",
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.w400,
@@ -543,113 +574,123 @@ class _LocalCandidatePageState extends State<LocalCandidatePage> {
                       ),
                       Container(
                         height: 270,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Container(
-                                height: 35,
-                                decoration: BoxDecoration(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                            Container(
+                              height: 35,
+                              decoration: BoxDecoration(
                                   color: Colors.grey.withOpacity(0.4),
-                                  borderRadius: BorderRadius.circular(20.0)
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text("Monday(7:00 AM - 6:30 PM)",
-                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15.0),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Container(
-                                height: 35,
-                                decoration: BoxDecoration(
-                                    color: Colors.grey.withOpacity(0.4),
-                                    borderRadius: BorderRadius.circular(20.0)
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text("Tuesday(7:00 AM - 6:30 PM)",
-                                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15.0),
-                                  ),
+                                  borderRadius: BorderRadius.circular(20.0)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Monday(7:00 AM - 6:30 PM)",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 15.0),
                                 ),
                               ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Container(
-                                height: 35,
-                                decoration: BoxDecoration(
-                                    color: Colors.grey.withOpacity(0.4),
-                                    borderRadius: BorderRadius.circular(20.0)
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text("Wednesday(7:00 AM - 6:30 PM)",
-                                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15.0),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Container(
-                                height: 35,
-                                decoration: BoxDecoration(
-                                    color: Colors.grey.withOpacity(0.4),
-                                    borderRadius: BorderRadius.circular(20.0)
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text("Thursday(7:00 AM - 6:30 PM)",
-                                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15.0),
-                                  ),
+                            ),
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                            Container(
+                              height: 35,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.withOpacity(0.4),
+                                  borderRadius: BorderRadius.circular(20.0)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Tuesday(7:00 AM - 6:30 PM)",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 15.0),
                                 ),
                               ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Container(
-                                height: 35,
-                                decoration: BoxDecoration(
-                                    color: Colors.grey.withOpacity(0.4),
-                                    borderRadius: BorderRadius.circular(20.0)
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text("Friday(7:00 AM - 6:30 PM)",
-                                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15.0),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Container(
-                                height: 35,
-                                decoration: BoxDecoration(
-                                    color: Colors.grey.withOpacity(0.4),
-                                    borderRadius: BorderRadius.circular(20.0)
-                                ),
-
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text("Saturday(7:00 AM - 6:30 PM)",
-                                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15.0),
-                                  ),
+                            ),
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                            Container(
+                              height: 35,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.withOpacity(0.4),
+                                  borderRadius: BorderRadius.circular(20.0)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Wednesday(7:00 AM - 6:30 PM)",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 15.0),
                                 ),
                               ),
-                            ],
-                          ),
-                          ),
+                            ),
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                            Container(
+                              height: 35,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.withOpacity(0.4),
+                                  borderRadius: BorderRadius.circular(20.0)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Thursday(7:00 AM - 6:30 PM)",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 15.0),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                            Container(
+                              height: 35,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.withOpacity(0.4),
+                                  borderRadius: BorderRadius.circular(20.0)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Friday(7:00 AM - 6:30 PM)",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 15.0),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                            Container(
+                              height: 35,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.withOpacity(0.4),
+                                  borderRadius: BorderRadius.circular(20.0)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Saturday(7:00 AM - 6:30 PM)",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 15.0),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                       SizedBox(
                         height: 20.0,
                       ),
-
                     ],
                   ),
                 ),
@@ -680,7 +721,7 @@ class _LocalCandidatePageState extends State<LocalCandidatePage> {
                         ),
                         Text(
                           " \"Developing a good work ethic is key. Apply yourself at whatever you do, whether you're a janitor or taking your "
-                              "first summer job because that work ethic will be reflected in everything you do in your life.\"",
+                          "first summer job because that work ethic will be reflected in everything you do in your life.\"",
                           style: TextStyle(color: Colors.grey),
                         )
                       ],
@@ -703,149 +744,227 @@ class _LocalCandidatePageState extends State<LocalCandidatePage> {
           shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
           onPressed: () {
             showModalBottomSheet(
+                isScrollControlled: true,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 backgroundColor: Colors.white,
+                enableDrag: true,
                 context: context,
                 builder: (context) {
-                  return Padding(
-                    padding: const EdgeInsets.only(left: 22.0, right: 15.0, top: 25.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  return Container(
+                    height: MediaQuery.of(context).size.height/ 2,
+                    child: StatefulBuilder(
+                      builder: (BuildContext context, StateSetter setter){
+                       return Stack(
                           children: [
-                            Text(
-                              "Choose Job",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Poppins'),
-                            ),
-                            GestureDetector(
-                              onTap: Navigator.of(context).pop,
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.transparent,
-                                  child: Image.asset(
-                              "assets/images/myicons/cancel.png",
-                              height: 20.0,
-                            ),
-                                ))
-                          ],
-                        ),
-
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: Text(
-                            "Which job do you want to hire a candidate ?",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w400,
-                                fontFamily: 'Poppins',
-                                fontSize: FontConstant.Tagline_text),
-                          ),
-                        ),
-
-                        Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: MediaQuery.of(context).size.width,
-                                height: 90,
-                                child: ElevatedButton(
-                                  onPressed: () {
-
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(top: 8.0),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 22.0, right: 15.0, top: 25.0),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () {
-
-                                              },
-                                              child:
-                                                  Padding(
-                                                    padding: const EdgeInsets.only(top:10.0),
-                                                    child: Radio(
-                                                      value: "",
-                                                      activeColor: Colors.orange,
-
-                                                      groupValue: _site,
-                                                      onChanged: ( value) {
-                                                        setState(() {
-
-                                                        });
-                                                      },
-                                                    ),
-                                                  )
-
+                                        Text(
+                                          "Choose Job",
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: 'Poppins'),
+                                        ),
+                                        GestureDetector(
+                                          onTap: Navigator.of(context).pop,
+                                          child: CircleAvatar(
+                                            backgroundColor: Colors.transparent,
+                                            child: Image.asset(
+                                              "assets/images/myicons/cancel.png",
+                                              height: 20.0,
                                             ),
-                                         Column(
-                                           mainAxisAlignment: MainAxisAlignment.start,
-                                           crossAxisAlignment: CrossAxisAlignment.start,
-                                           children: [
-                                           Text(
-                                             "Driver",
-                                             style: TextStyle(
-                                                 fontSize: 14,
-                                                 color: Colors.black,
-                                                 fontWeight: FontWeight.bold,
-                                                 fontFamily: 'Poppins'),
-                                           ),
-                                           Container(
-                                             width: 240,
-                                             height: 40,
-                                             child: Text(
-                                               "Lorem ipsum dolor sit amet,consectetur adipiscing elit,consectetur",
-                                               maxLines: 2,
-                                               overflow: TextOverflow.ellipsis,
-                                               style: TextStyle(
-                                                   color: Colors.black,
-                                                   fontWeight: FontWeight.w400,
-                                                   fontFamily: 'Poppins',
-                                                   fontSize: 11.0),
-                                             ),
-                                           ),
-                                         ],)
-                                          ],
-                                        )
+                                          ),
+                                        ),
                                       ],
                                     ),
-                                  ),
-                                  style: TextButton.styleFrom(
-                                    backgroundColor: Colors.white,
-                                    elevation: 0,
-                                    primary: Colors.grey.withOpacity(0.4),
-                                    alignment: Alignment.centerLeft,
-                                    //minimumSize: Size(size.width, 45)),
-                                  ),
+                                    Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      child: Text.rich(
+                                        TextSpan(
+                                          text: "Select job you want to assign to ",
+                                          children: <InlineSpan>[
+                                            TextSpan(
+                                              text: '${widget.candidateFirstName}',
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w700,
+                                                fontFamily: 'Poppins',
+                                              ),
+                                            )
+                                          ],
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w400,
+                                              fontFamily: 'Poppins',
+                                              fontSize: FontConstant.Tagline_text),
+                                        ),
+                                      ),
+                                    ),
+                                    FutureBuilder<List<Job>>(
+                                        future: futureJobs,
+                                        builder: (context, snapshot) {
+                                          if (snapshot.hasError) {
+                                            return Center(
+                                              child: Text("Error: ${snapshot.error}"),
+                                            );
+                                          } else if (snapshot.hasData) {
+                                            return ListView.builder(
+                                              shrinkWrap: true,
+                                              controller: listScrollController,
+                                              scrollDirection: Axis.vertical,
+                                              itemCount: snapshot.data!.length,
+                                              padding: EdgeInsets.zero,
+                                              itemBuilder: (BuildContext context, int index) {
+                                                return Column(
+                                                    crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                    children: [
+                                                      Container(
+                                                        width: MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                        height: 90,
+                                                        child: RadioListTile<String?>(
+                                                          activeColor: Colors.orange,
+                                                          value: snapshot.data![index].id,
+                                                          groupValue: selectedValue,
+                                                          onChanged: (String? value) async {
+                                                            print(
+                                                                "Value: $selectedValue");
+
+                                                            setter(() {
+                                                              selectedValue = value!;
+                                                              showAssignButton = true;
+                                                            });
+
+                                                          },
+                                                          title: Text(
+                                                            "${snapshot.data![index].jobTitle}",
+                                                            style: TextStyle(
+                                                                fontSize: 14,
+                                                                color: Colors.black,
+                                                                fontWeight:
+                                                                FontWeight.bold,
+                                                                fontFamily: 'Poppins'),
+                                                          ),
+                                                          subtitle: Text(
+                                                            "${snapshot.data![index].jobDescription}",
+                                                            maxLines: 2,
+                                                            overflow:
+                                                            TextOverflow.ellipsis,
+                                                            style: TextStyle(
+                                                                color: Colors.black,
+                                                                fontWeight:
+                                                                FontWeight.w400,
+                                                                fontFamily: 'Poppins',
+                                                                fontSize: 11.0),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding: const EdgeInsets.only(
+                                                            left: 10.0, right: 10.0),
+                                                        child: Container(
+                                                          width: MediaQuery.of(context)
+                                                              .size
+                                                              .width,
+                                                          height: 1, // Thickness
+                                                          color: Colors.grey
+                                                              .withOpacity(0.2),
+                                                        ),
+                                                      ),
+                                                    ]);
+                                              },
+                                            );
+                                          } else if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return shimmerBuilder();
+                                          } else if(!snapshot.hasData){
+                                            return Center(
+                                              child: Text("Please create a job in the job section", style:
+                                              TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight:
+                                                  FontWeight.w400,
+                                                  fontFamily: 'Poppins',
+                                                  fontSize: 11.0)),
+                                            );
+                                          }
+                                          else {
+                                            return Center(
+                                              child: Text("Please create a job in the job section", style:
+                                              TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight:
+                                                  FontWeight.w400,
+                                                  fontFamily: 'Poppins',
+                                                  fontSize: 11.0)),
+                                            );
+                                          }
+                                        }),
+
+                                  ],
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                            ),
+                            showAssignButton ?
+                            Align(
+                                alignment: Alignment.bottomCenter,
                                 child: Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  height: 1, // Thickness
-                                  color: Colors.grey.withOpacity(0.2),
-                                ),
-                              ),
-                            ]),
-                      ],
+                                  margin: EdgeInsets.symmetric(horizontal: 10),
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      //Do candidate job assign here
+                                      Fluttertoast.showToast(
+                                          msg: "Job assigned successful",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.BOTTOM, // Also possible "TOP" and "CENTER"
+                                          backgroundColor: Colors.black54,
+                                          textColor: Colors.white);
+                                      // setter((){
+                                      //   showErrorMessage(context: context, title: "Assigned successful", body: "${widget.candidateFirstName} will be notified. \n Thanks!", type: messageType.Success, buttonFunction: () {
+                                      //     Navigator.of(context).pop();
+                                      //   });
+                                      // });
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(
+                                      'Assign',
+                                      style: TextStyle(
+                                          color: Colors.black87,
+                                          fontFamily: "Poppins",
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10)),
+                                        primary: ColorConstant.primary,
+                                        minimumSize: Size(MediaQuery.of(context).size.width, 45)),
+                                  ),
+                                )
+                            ) : Container(),
+                          ],
+                        );
+                      },
                     ),
                   );
                 });
+
+
           },
           child: Text(
             "SELECT JOB",
@@ -858,6 +977,20 @@ class _LocalCandidatePageState extends State<LocalCandidatePage> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+    );
+  }
+
+  Widget shimmerBuilder() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade400,
+      highlightColor: Colors.grey.shade100,
+      child: Container(
+        width: MediaQuery.of(context)
+            .size
+            .width,
+        height: 90,
+
+      ),
     );
   }
 }

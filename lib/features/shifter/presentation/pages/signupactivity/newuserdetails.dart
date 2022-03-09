@@ -16,11 +16,10 @@ import 'package:shifter/features/shifter/presentation/provider/loginprovider/log
 import 'package:shifter/features/shifter/presentation/provider/selectionprovider/selection_activity_provider.dart';
 import 'package:shifter/features/shifter/presentation/widgets/countrybottomsheet.dart';
 import 'package:shifter/features/shifter/presentation/widgets/loadingscreen.dart';
-import 'package:shifter/features/shifter/presentation/widgets/planswidget/plan_widget.dart';
 import 'package:shifter/features/shifter/presentation/widgets/selectbusinesstype/naicecategory.dart';
+import 'package:shifter/features/shifter/presentation/widgets/show-error-dialog.dart';
 import 'package:shifter/utils/colorconstant.dart';
 import 'package:shifter/utils/consants.dart';
-import 'package:shifter/utils/preferences/recruiter_preferences.dart';
 
 class NewUserDetails extends StatefulWidget {
   static const Tag = "-/newuserscreen";
@@ -34,6 +33,7 @@ class NewUserDetails extends StatefulWidget {
 bool _isLoading = false;
 
 class _NewUserDetailsState extends State<NewUserDetails> {
+
   final _currentDate = DateTime.now();
 
   String _displayId = "0";
@@ -41,10 +41,12 @@ class _NewUserDetailsState extends State<NewUserDetails> {
   String _activateDate = "";
 
 
+
    String _countryId = "0";
   String _stateId = "0";
   String _cityId = "0";
   bool recruiterIsVerified = false;
+
 
   // String _packageId = "3";
   DateTime? _selectedDate;
@@ -72,7 +74,6 @@ class _NewUserDetailsState extends State<NewUserDetails> {
   TextEditingController _userPhoneNumberController = TextEditingController();
   TextEditingController _userEmailController = TextEditingController();
   TextEditingController _userSSNController = TextEditingController();
-  TextEditingController _userCountryCodeController = TextEditingController();
   TextEditingController _userStateController = TextEditingController();
   TextEditingController _userPasswordController = TextEditingController();
   TextEditingController _companyNameController = TextEditingController();
@@ -81,6 +82,7 @@ class _NewUserDetailsState extends State<NewUserDetails> {
   TextEditingController _companyEINController = TextEditingController();
   TextEditingController _companyCityController = TextEditingController();
   TextEditingController _companyStateController = TextEditingController();
+  TextEditingController OTPController = TextEditingController();
 
   FocusNode _naiceFocus = FocusNode();
   FocusNode _businessNameFocus = FocusNode();
@@ -104,13 +106,13 @@ class _NewUserDetailsState extends State<NewUserDetails> {
   void dispose() {
     _countryController.dispose();
     _userSSNController.dispose();
+    OTPController.dispose();
     _userFullNameController.dispose();
     _userZipcodeController.dispose();
     _userCityController.dispose();
     _userPhoneNumberController.dispose();
     _userEmailController.dispose();
     _companyEINController.dispose();
-    _userCountryCodeController.dispose();
     _userPasswordController.dispose();
     _companyNameController.dispose();
     _companyZipCodeController.dispose();
@@ -345,7 +347,7 @@ class _NewUserDetailsState extends State<NewUserDetails> {
                     ),
                     SizedBox(width: 8),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width / 1.47,
+                      width: MediaQuery.of(context).size.width / 1.72,
                       child: TextFormField(
                         controller: _userPhoneNumberController,
                         autofocus: false,
@@ -1031,6 +1033,7 @@ class _NewUserDetailsState extends State<NewUserDetails> {
     super.initState();
   }
 
+
   @override
   Widget build(BuildContext context) {
     //dynamic getPackageId = Preferences().getPackageId();
@@ -1124,50 +1127,61 @@ class _NewUserDetailsState extends State<NewUserDetails> {
                                   Navigator.of(context)
                                       .pushNamed(UserCategory.Tag);
                                 } else {
-                                  Navigator.push(context, PageTransition(
-                                      child: VerifyActivity(
-                                        displayId: _displayId,
-                                        ein: _companyEINController.text,
-                                        ssn: _userSSNController.text,
-                                        naice: _companyNAICEController
-                                            .text,
-                                        dob: _userDobController.text,
-                                        businessType:
-                                        _currentBusinessType,
-                                        companyName:
-                                        _companyNameController.text,
-                                        companyZipcode:
-                                        _companyZipCodeController
-                                            .text,
-                                        companyCity:
-                                        _companyCityController.text,
-                                        companyState:
-                                        _companyStateController
-                                            .text,
-                                        city: _userCityController.text,
-                                        state:
-                                        _userStateController.text,
-                                        zipcode:
-                                        _userZipcodeController.text,
-                                        fullName:
-                                        _userFullNameController
-                                            .text,
-                                        password:
-                                        _userPasswordController
-                                            .text,
-                                        countryCode:
-                                        _userCountryCodeController
-                                            .text,
-                                        packageId:
-                                        int.parse(packageId),
-                                        activateDate: _activateDate,
-                                        expiryDate: _expireDate,
-                                        countryId:
-                                        _countryController.text,
-                                        stateId: _stateId,
-                                        cityId: _cityId,
-                                        email: _userEmailController.text,
-                                        phone: _userPhoneNumberController.text,), type: PageTransitionType.bottomToTop));
+                                  if(_userEmailController.value.text.isNotEmpty &&
+                                  _userPhoneNumberController.value.text.isNotEmpty &&
+                                  _userFullNameController.value.text.isNotEmpty &&
+                                  _companyEINController.value.text.isNotEmpty &&
+                                      _userSSNController.value.text.isNotEmpty){
+                                    print("Code: ${_countryController.text}");
+                                    Navigator.push(context, PageTransition(
+                                        child: VerifyActivity(
+                                          displayId: _displayId,
+                                          ein: _companyEINController.text,
+                                          ssn: _userSSNController.text,
+                                          naice: _companyNAICEController
+                                              .text,
+                                          dob: _userDobController.text,
+                                          businessType:
+                                          _currentBusinessType,
+                                          companyName:
+                                          _companyNameController.text,
+                                          companyZipcode:
+                                          _companyZipCodeController
+                                              .text,
+                                          companyCity:
+                                          _companyCityController.text,
+                                          companyState:
+                                          _companyStateController
+                                              .text,
+                                          city: _userCityController.text,
+                                          state:
+                                          _userStateController.text,
+                                          zipcode:
+                                          _userZipcodeController.text,
+                                          fullName:
+                                          _userFullNameController
+                                              .text,
+                                          password:
+                                          _userPasswordController
+                                              .text,
+                                          countryCode:
+                                          _countryController.text,
+                                          packageId:
+                                          int.parse(packageId),
+                                          activateDate: _activateDate,
+                                          expiryDate: _expireDate,
+                                          countryId:
+                                          _countryController.text,
+                                          stateId: _stateId,
+                                          cityId: _cityId,
+                                          email: _userEmailController.text,
+                                          phone: _userPhoneNumberController.text,), type: PageTransitionType.bottomToTop));
+                                  }else{
+                                    showErrorMessage(context: context,
+                                        title: "Missing Details", body: "Please fill in the missing details in the form", type: messageType.Error, buttonFunction: (){
+                                      Navigator.of(context).pop();
+                                        });
+                                  }
                                     // showDialog(
                                     //     context: context,
                                     //     barrierDismissible: true,
@@ -1329,8 +1343,7 @@ class _NewUserDetailsState extends State<NewUserDetails> {
                                 _currentStep = index;
                               });
                             },
-                            controlsBuilder: (context,
-                                {onStepContinue, onStepCancel}) {
+                            controlsBuilder: (BuildContext context, ControlsDetails controls) {
                               final isLastStep =
                                   _currentStep == getSteps().length - 1;
                               return Container(
@@ -1339,7 +1352,7 @@ class _NewUserDetailsState extends State<NewUserDetails> {
                                     if (_currentStep > 0)
                                       Expanded(
                                         child: ElevatedButton(
-                                          onPressed: onStepCancel,
+                                          onPressed: controls.onStepCancel,
                                           child: const Text('Back'),
                                         ),
                                       ),
@@ -1349,7 +1362,7 @@ class _NewUserDetailsState extends State<NewUserDetails> {
 
                                     Expanded(
                                       child: ElevatedButton(
-                                        onPressed: onStepContinue,
+                                        onPressed: controls.onStepContinue,
                                         child: Text(
                                             isLastStep ? 'Submit' : 'Next'),
                                       ),

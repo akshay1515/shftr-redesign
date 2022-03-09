@@ -1,46 +1,54 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shifter/features/shifter/presentation/models/recruiter/CandidatesSubcategory.dart';
+import 'package:shifter/features/shifter/presentation/models/recruiter/categories.dart';
 import 'package:shifter/features/shifter/presentation/models/recruiter/recruiter.dart';
 import 'package:shifter/features/shifter/presentation/pages/candidateactivity/local_candidate_page.dart';
-import 'package:shifter/features/shifter/presentation/pages/locationactivity/location_activity.dart';
-import 'package:shifter/features/shifter/presentation/provider/recruiterprovider/banners_provider.dart';
+import 'package:shifter/features/shifter/presentation/pages/homepage/category_page.dart';
 import 'package:shifter/features/shifter/presentation/provider/recruiterprovider/recruiter_provider.dart';
-import 'package:shifter/features/shifter/presentation/services/recruiter/recruiter_service.dart';
+import 'package:shifter/features/shifter/presentation/services/recruiter/candidates_subcategory_service.dart';
+import 'package:shifter/features/shifter/presentation/services/recruiter/category_service.dart';
 import 'package:shifter/features/shifter/presentation/view_models/recruiter/recruiter_view_model.dart';
 import 'package:shifter/features/shifter/presentation/widgets/loadingscreen.dart';
-import 'package:shifter/features/shifter/presentation/widgets/swipecards/userswipecard.dart';
 import 'package:shifter/utils/consants.dart';
 import 'package:shifter/utils/fontconstant.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+
 
 class UserHomePage extends StatefulWidget {
-  static const String Tag = "-/userhomepage";
-
   const UserHomePage({
     Key? key,
     this.id,
+    this.catId,
+    this.categoryName
   }) : super(key: key);
-  final String? id;
+  final String? id, catId, categoryName;
 
   @override
   State<UserHomePage> createState() => _UserHomePageState();
 }
 
 final List<String> imgList = [
-
   "https://shifterteam.host/shifterwebportal/assets/img/banner/1216202112260101_Shftr.banner_png_20211225_200909_0000.png",
   "https://shifterteam.host/shifterwebportal/assets/img/banner/2230202112260101_Assemble Your Team_png_20211225_202130_0000.png",
-  "https://shifterteam.host/shifterwebportal/assets/img/banner/1216202112260101_Shftr.banner_png_20211225_200909_0000.png",
+  "https://shifterteam.host/shifterwebportal/assets/img/banner/1216202112260101_Shftr.banner_png_20211225_200909_0000.png"
 ];
 
 class _UserHomePageState extends State<UserHomePage> {
-  Recruiter? recruiter;
   RecruiterViewModel? recruiterViewModel;
   bool _isLoading = false;
   CarouselController buttonCarouselController = CarouselController();
   int _currentIndex = 0;
+  String? id;
+  String? name;
+  SharedPreferences? preferences;
+
+  late Future<List<CandidatesSubcategory>> futureCandidates;
+  late Future<List<Category>> futureCategory;
 
   List<T> map<T>(List list, Function handler) {
     List<T> result = [];
@@ -50,41 +58,79 @@ class _UserHomePageState extends State<UserHomePage> {
     return result;
   }
 
-
-
   @override
   void initState() {
     // BannersProvider bannersProvider =
     // Provider.of<BannersProvider>(context, listen: false);
 
     setState(() {
+
       _isLoading = true;
+
     });
+    getId();
+    getSelectedCategoryName();
+
+    futureCandidates =
+        SubcategoryService.getCandidateSubCat( id ?? "6");
+    futureCategory = CategoryService.fetchCategories();
+
     super.initState();
+  }
+
+  Future<String> getId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String selectedCategoryID =
+        prefs.getString("selectedCategoryID") ?? "";
+    return selectedCategoryID;
+  }
+  Future<String> getSelectedCategoryName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String selectedCategoryName =
+        prefs.getString("categoryName") ?? "";
+
+    // getSelectedCategoryName().then((value) {
+    //   setState(() {
+    //     name = value;
+    //   });
+    // });
+    return selectedCategoryName;
   }
 
   @override
   Widget build(BuildContext context) {
-    Recruiter recruiter = Provider.of<RecruiterProvider>(context).recruiter;
+    Recruiter? recruiter = Provider.of<RecruiterProvider>(context).recruiter;
+    futureCandidates =
+        SubcategoryService.getCandidateSubCat( id ?? "6");
+    Widget launchWebView (){
+    return  Container(
+          width: double.infinity,
+          height: 600,
+          child: WebView(
+            initialUrl: 'https://shftr.app/',
+            // enable Javascript on WebView
+            javascriptMode: JavascriptMode.unrestricted,
+          )
+      );
+    }
     final List<Widget> imageSliders = imgList
         .map((item) => Container(
-      child: Container(
-        margin: EdgeInsets.all(5.0),
-        child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-          child: GestureDetector(
-            onTap: (){
-              Navigator.of(context)
-                  .pushNamed(LocationActivity.Tag);
-            },
-            child: Image.network(
-              item,
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-      ),
-    ))
+              child: Container(
+                margin: EdgeInsets.all(5.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  child: GestureDetector(
+                    onTap: () {
+                      launchWebView();
+                    },
+                    child: Image.network(
+                      item,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+            ))
         .toList();
     return _isLoading
         ? Scaffold(
@@ -144,7 +190,7 @@ class _UserHomePageState extends State<UserHomePage> {
                                       ),
                                       _isLoading
                                           ? Text(
-                                              "${recruiter.name}",
+                                              "${recruiter?.name}",
                                               style: TextStyle(
                                                   fontSize: 26,
                                                   fontFamily: "Poppins",
@@ -184,14 +230,11 @@ class _UserHomePageState extends State<UserHomePage> {
                                 ],
                               ),
                               GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context)
-                                      .pushNamed(LocationActivity.Tag);
-                                },
+                                onTap: () {},
                                 child: Row(
                                   children: [
                                     Text(
-                                      "${recruiter.city} ${recruiter.state}",
+                                      "${recruiter?.city} ${recruiter?.state}",
                                       style: TextStyle(
                                           fontSize: 15,
                                           fontFamily: "Poppins",
@@ -251,13 +294,31 @@ class _UserHomePageState extends State<UserHomePage> {
                                 }).toList(),
                               ),
                             ],
-                          )),
+                          ),
+                      ),
                     ],
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushNamed(LocationActivity.Tag);
+                  onTap: () async {
+                    final SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    // String selectedCategoryID =
+                    //     prefs.getString("selectedCategoryID") ?? "";
+                    getId().then((value) {
+                      setState(() {
+                        id = value;
+                      });
+                    });
+                    print("Preference category id: $id");
+                    Navigator.push(
+                            context,
+                            PageTransition(
+                                child: CategoryPage(
+                                  selectedCategoryId: id,
+                                ),
+                                type: PageTransitionType.bottomToTop))
+                        .then((_) => setState(() {}));
                   },
                   child: Container(
                     height: 50,
@@ -322,184 +383,238 @@ class _UserHomePageState extends State<UserHomePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Freelance",
+                          "${name ?? "Available Candidates"}",
                           style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
                               fontSize: 16.0),
                         ),
-                        Container(
-                          height: 338,
-                          child: ListView(
-                            shrinkWrap: true,
-                            physics: const BouncingScrollPhysics(),
-                            padding: const EdgeInsets.only(
-                              top: 20.0,
-                            ),
-                            scrollDirection: Axis.horizontal,
-                            children: [
-                              //Replace with api
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 10.0, bottom: 10.0),
-                                child: PhysicalModel(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  color: Colors.white,
-                                  elevation: 2,
-                                  shadowColor: Colors.grey,
-                                  child: Container(
-                                    width: 215,
-                                    child: Column(
-                                      children: [
-                                        Center(
-                                          child: Container(
-                                            height: 80,
-                                            width: 80,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                              image: DecorationImage(
-                                                image: AssetImage(
-                                                    "assets/images/logo.png"),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 5.0,
-                                        ),
-                                        Center(
-                                          child: Text(
-                                            "Ben Trem",
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: FontConstant
-                                                    .Tagline_text),
-                                          ),
-                                        ),
-                                        Center(
-                                          child: Text(
-                                            "Freelancer",
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.normal,
-                                                fontSize: FontConstant
-                                                    .Mini_Tagline_text),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 5.0,
-                                        ),
-                                        Center(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Icon(
-                                                Icons.location_on_outlined,
-                                                size: 18.0,
-                                              ),
-                                              Text(
-                                                "Rochester,NY",
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontFamily: 'Poppins',
-                                                    fontWeight:
-                                                        FontWeight.w500,
-                                                    fontSize: FontConstant
-                                                        .Mini_Tagline_text),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 10.0,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8.0, right: 8.0),
-                                          child: Container(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            height: 1, // Thickness
-                                            color:
-                                                Colors.grey.withOpacity(0.2),
-                                          ),
-                                        ),
-                                        Center(
-                                          child: Padding(
-                                            padding:
-                                                const EdgeInsets.all(18.0),
-                                            child: Text(
-                                              "about me about me about me about me about meabout me about me about me about me about meabout me about me about me about me about meabout me about me about me about me about meabout me about me about me about me about meabout me about me about me about me about meabout me about me about me about me about me",
-                                              maxLines: 3,
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.center,
-                                              softWrap: false,
-                                              style: TextStyle(
-                                                fontSize: FontConstant
-                                                    .Mini_Tagline_text,
-                                                height: 1.5,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8.0, right: 8.0),
-                                          child: Container(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            height: 1, // Thickness
-                                            color:
-                                                Colors.grey.withOpacity(0.2),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 8.0,
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 8),
-                                          child: ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                  context,
-                                                  PageTransition(
-                                                      child:
-                                                          LocalCandidatePage(),
-                                                      type: PageTransitionType
-                                                          .bottomToTop));
-                                            },
-                                            child: Text(
-                                              'View Profile',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontFamily: "Poppins",
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 12),
-                                            ),
-                                            style: ElevatedButton.styleFrom(
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8)),
-                                              primary: Colors.black,
-                                              //minimumSize: Size(size.width, 45)),
-                                            ),
-                                          ),
-                                        )
-                                      ],
+                        FutureBuilder<dynamic>(
+                            future:
+                                Future.wait([
+                                  futureCandidates,
+                                  futureCategory]),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError) {
+                                return Center(
+                                  child: Text("Error: ${snapshot.error}"),
+                                );
+                              } else if (snapshot.hasData) {
+                                return Container(
+                                  height: 338,
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: const BouncingScrollPhysics(),
+                                    padding: const EdgeInsets.only(
+                                      top: 20.0,
                                     ),
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: snapshot.data![0].length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 10.0, bottom: 10.0),
+                                        child: PhysicalModel(
+                                          borderRadius:
+                                              BorderRadius.circular(5.0),
+                                          color: Colors.white,
+                                          elevation: 2,
+                                          shadowColor: Colors.grey,
+                                          child: Container(
+                                            width: 215,
+                                            child: Column(
+                                              children: [
+                                                Center(
+                                                  child: Container(
+                                                    height: 80,
+                                                    width: 80,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                      image: DecorationImage(
+                                                        fit: BoxFit.cover,
+                                                        image: snapshot.data![0][index].userProfileImage != null && snapshot.data![0][index].userProfileImage != "" ?
+                                                        NetworkImage('${snapshot.data![0][index].userProfileImage}') :
+                                                        AssetImage(
+                                                            "assets/images/logo.png") as ImageProvider,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 5.0,
+                                                ),
+                                                Center(
+                                                  child: Text(
+                                                    "${snapshot.data![0][index].userFirstName} ${snapshot.data![0][index].userLastName }",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: FontConstant
+                                                            .Tagline_text),
+                                                  ),
+                                                ),
+                                                Center(
+                                                  child: Text(
+                                                    "${snapshot.data![0][index].userJobTitle}",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                        fontSize: FontConstant
+                                                            .Mini_Tagline_text),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 5.0,
+                                                ),
+                                                Center(
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Icon(
+                                                        Icons
+                                                            .location_on_outlined,
+                                                        size: 18.0,
+                                                      ),
+                                                      Text(
+                                                        "${snapshot.data![0][index].city}, ${snapshot.data![0][index].state}",
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontFamily:
+                                                                'Poppins',
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontSize: FontConstant
+                                                                .Mini_Tagline_text),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 10.0,
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 8.0,
+                                                          right: 8.0),
+                                                  child: Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    height: 1, // Thickness
+                                                    color: Colors.grey
+                                                        .withOpacity(0.2),
+                                                  ),
+                                                ),
+                                                Center(
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            18.0),
+                                                    child: Text(
+                                                      "${snapshot.data![0][index].about}",
+                                                      maxLines: 3,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      softWrap: false,
+                                                      style: TextStyle(
+                                                        fontSize: FontConstant
+                                                            .Mini_Tagline_text,
+                                                        height: 1.5,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 8.0,
+                                                          right: 8.0),
+                                                  child: Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    height: 1, // Thickness
+                                                    color: Colors.grey
+                                                        .withOpacity(0.2),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 8.0,
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      horizontal: 8),
+                                                  child: ElevatedButton(
+                                                    onPressed: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          PageTransition(
+                                                              child:
+                                                                  LocalCandidatePage(
+                                                                    recruiterId: recruiter?.id,
+                                                                    candidateFirstName: snapshot.data![0][index].userFirstName ,
+                                                                    candidateLastName: snapshot.data![0][index].userLastName ,
+                                                                    candidateJobTitle: snapshot.data![0][index].userJobTitle ,
+                                                                    candidateCity: snapshot.data![0][index].city,
+                                                                    candidateState: snapshot.data![0][index].state,
+                                                                    candidateProfileImage: snapshot.data![0][index].userProfileImage,
+                                                                    candidateExperience: snapshot.data![0][index].exeLevel,
+                                                                    candidateQualification: snapshot.data![0][index].qualification,
+                                                                    candidateSSN: snapshot.data![0][index].ssn,
+                                                                    candidateAbout: snapshot.data![0][index].about,
+                                                                  ),
+                                                              type: PageTransitionType
+                                                                  .bottomToTop));
+                                                    },
+                                                    child: Text(
+                                                      'View Profile',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontFamily: "Poppins",
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 12),
+                                                    ),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          8)),
+                                                      primary: Colors.black,
+                                                      //minimumSize: Size(size.width, 45)),
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                                );
+                              } else if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                //await Future.delayed(Duration(seconds: 2),(){});
+                                return shimmerBuilder();
+                              } else {}
+                              return LoadingScreen();
+                            }),
                       ],
                     ),
                   ),
@@ -535,7 +650,7 @@ class _UserHomePageState extends State<UserHomePage> {
                           ),
                           Text(
                             " \"Developing a good work ethic is key. Apply yourself at whatever you do, whether you're a janitor or taking your "
-                                "first summer job because that work ethic will be reflected in everything you do in your life.\"",
+                            "first summer job because that work ethic will be reflected in everything you do in your life.\"",
                             style: TextStyle(color: Colors.grey),
                           )
                         ],
@@ -544,5 +659,161 @@ class _UserHomePageState extends State<UserHomePage> {
               ],
             )))
         : LoadingScreen();
+  }
+  Widget shimmerBuilder(){
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      child: Padding(
+        padding: const EdgeInsets.only(
+            left: 10.0, bottom: 10.0),
+        child: PhysicalModel(
+          borderRadius:
+          BorderRadius.circular(5.0),
+          color: Colors.white,
+          elevation: 2,
+          shadowColor: Colors.grey,
+          child: Container(
+            width: 215,
+            child: Column(
+              children: [
+                Center(
+                  child: Container(
+                    height: 80,
+                    width: 80,
+                    decoration: BoxDecoration(
+                      borderRadius:
+                      BorderRadius.circular(
+                          8.0),
+                      image: DecorationImage(
+                        image: AssetImage(
+                            "assets/images/logo.png"),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 5.0,
+                ),
+                Center(
+                  child: Container(
+                    height: 20,
+                    width: 100,
+                  ),
+                ),
+                Center(
+                  child: Container(
+                    height: 20,
+                    width: 100,
+                  ),
+                ),
+                SizedBox(
+                  height: 5.0,
+                ),
+                Center(
+                  child: Row(
+                    mainAxisAlignment:
+                    MainAxisAlignment
+                        .center,
+                    children: [
+                      Container(
+                        height: 10,
+                        width: 10,
+                      ),
+                      Container(
+                        height: 20,
+                        width: 100,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                Padding(
+                  padding:
+                  const EdgeInsets.only(
+                      left: 8.0,
+                      right: 8.0),
+                  child: Container(
+                    width:
+                    MediaQuery.of(context)
+                        .size
+                        .width,
+                    height: 1, // Thickness
+                    color: Colors.grey
+                        .withOpacity(0.2),
+                  ),
+                ),
+                Center(
+                  child: Padding(
+                    padding:
+                    const EdgeInsets.all(
+                        18.0),
+                    child: Container(
+                      height: 50,
+                      width: 120,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding:
+                  const EdgeInsets.only(
+                      left: 8.0,
+                      right: 8.0),
+                  child: Container(
+                    width:
+                    MediaQuery.of(context)
+                        .size
+                        .width,
+                    height: 1, // Thickness
+                    color: Colors.grey
+                        .withOpacity(0.2),
+                  ),
+                ),
+                SizedBox(
+                  height: 8.0,
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(
+                      horizontal: 8),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          PageTransition(
+                              child:
+                              LocalCandidatePage(),
+                              type: PageTransitionType
+                                  .bottomToTop));
+                    },
+                    child: Text(
+                      'View Profile',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: "Poppins",
+                          fontWeight:
+                          FontWeight.w600,
+                          fontSize: 12),
+                    ),
+                    style: ElevatedButton
+                        .styleFrom(
+                      shape:
+                      RoundedRectangleBorder(
+                          borderRadius:
+                          BorderRadius
+                              .circular(
+                              8)),
+                      primary: Colors.black,
+                      //minimumSize: Size(size.width, 45)),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

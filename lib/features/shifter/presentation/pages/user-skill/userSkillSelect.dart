@@ -129,7 +129,8 @@ class _UserSkillSelectState extends State<UserSkillSelect> {
                           margin: EdgeInsets.only(left: 50,right: 50,bottom: 10),
                           child: ElevatedButton(
                               onPressed: () {
-                                Navigator.of(context).pushNamed(UserHomePage.Tag);
+
+                                //Navigator.of(context).push(UserHomePage());
                               },
                               style: ElevatedButton.styleFrom(
                                   primary: ColorConstant.primary,

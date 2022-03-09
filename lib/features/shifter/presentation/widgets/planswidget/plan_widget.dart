@@ -9,8 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:shifter/features/shifter/presentation/models/recruiter/packages.dart';
 import 'package:shifter/features/shifter/presentation/models/recruiter/features.dart';
 import 'package:shifter/features/shifter/presentation/models/recruiter/recruiter.dart';
-import 'package:shifter/features/shifter/presentation/pages/loginactivity/otpactivity.dart';
-import 'package:shifter/features/shifter/presentation/pages/loginactivity/otpmailactivity.dart';
+
 import 'package:shifter/features/shifter/presentation/provider/loginprovider/login_activity_provider.dart';
 import 'package:shifter/features/shifter/presentation/provider/recruiterprovider/recruiter_provider.dart';
 import 'package:shifter/features/shifter/presentation/provider/signupprovider/signup_provider.dart';
@@ -19,7 +18,6 @@ import 'package:shifter/features/shifter/presentation/services/recruiter/feature
 import 'package:shifter/features/shifter/presentation/widgets/bottom_navigation.dart';
 import 'package:shifter/features/shifter/presentation/widgets/loadingscreen.dart';
 import 'package:shifter/utils/colorconstant.dart';
-import 'package:shifter/utils/fontconstant.dart';
 import 'package:shifter/utils/preferences/recruiter_preferences.dart';
 
 import '../show-error-dialog.dart';
@@ -46,6 +44,7 @@ class PlanWidget extends StatefulWidget {
       activateDate,
       expiryDate,
       countryId,
+      fcmToken,
       stateId,
       cityId;
   final int? packageId;
@@ -57,6 +56,7 @@ class PlanWidget extends StatefulWidget {
        this.ssn,
        this.naice,
        this.dob,
+        this.fcmToken,
        this.businessType,
        this.companyName,
        this.companyZipcode,
@@ -203,10 +203,7 @@ class _PlanWidgetState extends State<PlanWidget> {
                                                 : Colors.black.withOpacity(0.9),
                                         // color: index % 2 == 0 ? Colors.cyan : Colors.deepOrange,
                                         // color: Colors.black.withOpacity(0.9),
-                                        borderRadius: BorderRadius.only(
-                                          bottomLeft: Radius.circular(10.0),
-                                          bottomRight: Radius.circular(10.0),
-                                        )),
+                                       ),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -437,7 +434,7 @@ class _PlanWidgetState extends State<PlanWidget> {
                 height: 30,
               ),
               CreditCardWidget(
-                glassmorphismConfig: Glassmorphism.defaultConfig(),
+
                 cardNumber: cardNumber,
                 expiryDate: expiryDate,
                 cardHolderName: cardHolderName,
@@ -495,7 +492,7 @@ class _PlanWidgetState extends State<PlanWidget> {
                           focusedBorder: borderActive,
                           enabledBorder: border,
                           labelText: 'Valid Till',
-                          hintText: 'XX/XX',
+                          hintText: 'MM/YY',
                         ),
                         cvvCodeDecoration: InputDecoration(
                           hintStyle: const TextStyle(color: Colors.grey),
@@ -536,33 +533,30 @@ class _PlanWidgetState extends State<PlanWidget> {
                           ),
                           child: Container(
                             margin: const EdgeInsets.all(12),
-                            child: Stack(
-                              children: [
-                                Visibility(
-                                  child: const Text(
-                                    'Confirm',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'halter',
-                                      fontSize: 14,
-                                      package: 'flutter_credit_card',
-                                    ),
-                                  ),
-                                )
-                              ],
-                            )
+                            child: isLoading ? Center(
+                              child: CircularProgressIndicator(color:  Colors.white,),
+                            ):const Text(
+                              'Confirm',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'halter',
+                                fontSize: 14,
+                                package: 'flutter_credit_card',
+                              ),
+                            ) ,
                           ),
                           onPressed: () {
-                            setState(() {
-                              isLoading = true;
-                            });
                             if (formKey.currentState!.validate()) {
+                              setState(() {
+                                isLoading = true;
+                              });
                               print('valid!');
                               print(widget.ssn);
                               auth.register(
                                   widget.displayId,
                                   widget.ein,
                                   widget.ssn,
+                                  widget.fcmToken,
                                   widget.naice,
                                   widget.dob,
                                   widget.businessType,
